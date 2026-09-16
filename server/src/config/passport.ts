@@ -20,13 +20,14 @@ passport.use(
             }
             catch (error) {
                 console.log(error);
+                return done(error);
             }
         }
     )
 );
 
 passport.serializeUser((user: any, done) => {
-    done(null, user.id)
+    done(null, user._id)
 });
 
 passport.deserializeUser(async (id: string, done) => {
