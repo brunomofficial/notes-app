@@ -3,6 +3,7 @@ import mongoose from "mongoose"
 import session from "express-session";
 import MongoStore from "connect-mongo";
 import passport from "./config/passport.js";
+import cors from "cors";
 import "dotenv/config";
 import usersRouter from "./routes/users.js";
 import notesRouter from "./routes/notes.js";
@@ -25,6 +26,12 @@ if (!process.env.SESSION_SECRET) {
 }
 
 app.use(express.json());
+
+app.use(cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+}));
+
 app.use(
     session({
         secret: process.env.SESSION_SECRET,
