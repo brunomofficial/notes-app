@@ -1,0 +1,75 @@
+.auth-page-container{
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+}
+
+.auth-forms-container{
+    display: flex;
+    margin: auto;
+    background-color: #01d80563;
+    border-radius: 10px;
+    box-shadow: 0 0 20px 5px #00000037;
+}
+
+.auth-form{
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    border-radius: 10px;
+    min-height: 70vh;
+    padding: 5px 20px;
+}
+
+.auth-form h3{
+    color: #484848;
+}
+
+.auth-form label{
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #494949;
+}
+
+.auth-form input[type="email"], 
+.auth-form input[type="password"]
+{
+    padding: 10px 10px;
+    border-radius: 10px;
+    background-color: #f2fcf2;
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #000000c8;
+}
+
+.auth-form button{
+    width: 100%;
+    margin-inline: auto;
+    font-size: 1.5rem;
+    color: #ffffff;
+    background-color: #5eaa02;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    padding: 7px 0px;
+    transition: all 0.5s ease;
+}
+
+.auth-form button:hover{
+    /* transform: scale(1.05); */
+    color: #ffffff;
+    background-color: #65cc04;
+}
+
+.auth-form button:active{
+    transform: scale(0.9);
+}
+
+.change-auth-mode-a{
+    margin-top: 10px;
+    cursor: pointer;
+    text-decoration: underline;
+    font-style: italic;
+    color: #000000b3;
+}

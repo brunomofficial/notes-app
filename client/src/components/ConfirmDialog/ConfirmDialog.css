@@ -1,0 +1,35 @@
+.confirm-dialog{
+    background: #d2fca1;
+    border: none;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.confirm-dialog::backdrop {
+    background-color: #0000004e;
+}
+
+.dialog-actions{
+    display: flex;
+    margin-top: auto;
+    width: 100%;
+    justify-content: space-around;
+}
+
+.dialog-actions button {
+    height: 40px;
+    font-weight: bold;
+    border-radius: 10px;
+}
+
+.confirm-dialog-btn{
+    background-color: #00000084;
+    color: #ffffffe6;
+}
+
+.cancel-dialog-btn{
+    background-color: #ffffffd9;
+    color: rgba(0, 0, 0, 0.757);
+}

@@ -1,0 +1,22 @@
+.navbar{
+    display: flex;
+    width: 50vw;
+    height: 50px;
+    padding: 10px 5px;
+    border-radius: 10px;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 5px;
+    background-color: #0dad05;
+    position: sticky;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.navlink{
+    transition: scale 0.5s ease;
+}
+
+.navlink:hover{
+    transform: scale(1.1);
+}

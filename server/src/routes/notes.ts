@@ -1,6 +1,6 @@
 import { Router,  type Request, type Response, type NextFunction } from "express";
 import { requireAuth } from "../middleware/auth.js";
-import { NoteModel } from "../models/note.js";
+import { NoteModel, type Note } from "../models/note.js";
 
 const router: Router = Router()
 
@@ -11,11 +11,18 @@ router.get(
         try {
             const user = req.user as any; // to refractor later
             const notes = await NoteModel.find({ userId: user._id });
-            res.json(notes);
+            const noteList = notes.map(n => ({
+                noteId: n._id,
+                title: n.title,
+                content: n.content,
+                createdAt: n.createdAt,
+                updatedAt: n.updatedAt,
+            }));
+            res.json(noteList);
         }
         catch (error) {
             console.log(error);
-            res.sendStatus(500);
+            res.status(500).json("Internal server error");
         }
     }
 );
@@ -32,14 +39,14 @@ router.post(
             const user = req.user as any;
             const note = await NoteModel.create({
                 userId : user._id,
-                title,
+                title: title || null,
                 content
             });
             res.status(201).json(note);
         }
         catch (error) {
             console.log(error);
-            res.sendStatus(500);
+            res.status(500).json("Internal server error");
         }
     }
 );
@@ -67,7 +74,7 @@ router.put(
         }
         catch (error) {
             console.log(error);
-            res.sendStatus(500);
+            res.status(500).json("Internal server error");
         } 
     }
 );
@@ -93,7 +100,7 @@ router.delete(
         }
         catch (error) {
             console.log(error);
-            res.sendStatus(500);
+            res.status(500).json("Internal server error");
         }
     }
 )

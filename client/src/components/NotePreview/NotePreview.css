@@ -1,0 +1,37 @@
+.note-preview{
+    border-radius: 20px;
+    margin-block: 7px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    border: 3px solid #000000c9;
+    max-width: 350px;
+    width: max-content;
+    min-width: 220px;
+    padding: 5px;
+    cursor: pointer;
+    transition: all 0.6s ease;
+}
+
+.note-preview:hover{
+    transform: scale(1.05);
+    border-color: #000000f5;
+}
+
+.note-preview:active{
+    transform: scale(0.95)
+}
+
+.note-preview-title{
+    font-weight: bold;
+    font-size: 1.1rem;
+    text-decoration: underline;
+    color: #000000b4;
+}
+
+.note-preview-content{
+    font-size: 1.4rem;
+    max-height: 72px;
+    overflow-y: hidden;
+    flex-wrap: wrap;
+}

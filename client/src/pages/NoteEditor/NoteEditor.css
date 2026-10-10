@@ -1,0 +1,82 @@
+.note-editor-page{
+    position: relative;
+}
+
+.note-container{
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 30px 0;
+    display: flex;
+    flex-direction: column;
+    border: 2px solid #7c7a7a;
+    flex: 1;
+    max-width: 500px;
+    padding: 10px;
+    border-radius: 20px;
+    position: relative;
+}
+
+.note-editor-btns{
+    position: absolute;
+    top: 5px;
+    right: 10px;
+}
+
+.note-editor-btns button{
+    border-radius: 5px;
+    border: none;
+    width: 70px;
+    padding: 5px 10px;
+    margin: 0 5px;
+    transition: all 0.3s ease;
+}
+
+.note-editor-btns button:hover{
+    transform: scale(1.1);
+}
+
+.note-editor-btns button:active{
+    transform: scale(1);
+}
+
+.save-note-btn{
+    background-color: green;
+    color: white;
+}
+
+.del-note-btn{
+    background-color: red;
+    color: white;
+}
+
+.note-container label{
+    font-weight: bold;
+    color: #000000dc;
+    font-size: 1.2rem;
+    margin-left: 10px;
+    margin-top: 5px;
+}
+
+.title-input{
+    width: 200px;
+    height: 40px;
+    margin: 10px;
+    border-radius: 10px;
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #000000bd
+}
+
+.note-input{
+    flex: 1;
+    margin: 10px;
+    border-radius: 20px;
+    border: 2px solid black;
+    overflow-y: scroll;
+    scrollbar-width: none;
+    resize: none;
+    padding: 10px;
+    font-size: 1.3rem;
+    font-family: Arial, Helvetica, sans-serif;
+}

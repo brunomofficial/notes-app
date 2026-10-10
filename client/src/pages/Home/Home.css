@@ -1,0 +1,34 @@
+.home-page{
+    overflow-y: scroll;
+    scrollbar-width: none;
+}
+
+.home-page h3{
+    margin-left: 15px;
+}
+
+.note-list{
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+}
+
+.no-notes-yet-btn{
+    width: 350px;
+    height: 40px;
+    border-radius: 7px;
+    align-self: center;
+    transition: all 0.15s ease;
+    border: none;
+    box-shadow: 0 0 15px #00000026;
+    font-size: 1.1rem;
+    color: #000000b2;
+}
+
+.no-notes-yet-btn:hover{
+    transform: scale(1.02);
+}
+
+.no-notes-yet-btn:active{
+    transform: scale(1);
+}

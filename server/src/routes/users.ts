@@ -28,7 +28,7 @@ router.post('/', async (req: Request, res: Response) => {
     }
     catch (error) {
         console.log(error);
-        return res.sendStatus(500);
+        return res.status(500).json({ error: "Internal server error" });
     }
 });
 
