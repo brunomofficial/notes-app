@@ -1,16 +1,18 @@
 .navbar{
     display: flex;
-    width: 50vw;
+    width: 300px;
     height: 50px;
     padding: 10px 5px;
     border-radius: 10px;
     justify-content: space-around;
     align-items: center;
     margin-top: 5px;
-    background-color: #0dad05;
+    background-color: #ffffff2d;
+    backdrop-filter: blur(5px);
+    box-shadow: 0px 0px 20px #0000002e;
     position: sticky;
-    left: 50%;
-    transform: translateX(-50%);
+    margin-inline: auto;
+    border-inline: 3px solid rgba(66, 53, 1, 0.395);
 }
 
 .navlink{
@@ -19,4 +21,18 @@
 
 .navlink:hover{
     transform: scale(1.1);
+}
+
+@media (max-width: 767px) {
+    .navbar {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        z-index: 1;
+        border-radius: 0px;
+        background-color: #ffffff79;
+        height: 60px;
+        border-top: 2px solid rgba(0, 0, 0, 0.16);
+        border-inline: none;
+    }
 }

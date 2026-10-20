@@ -20,8 +20,9 @@ lerna-debug.log*
 
 .vscode/
 !.vscode/extensions.json
+test.ts
+tests/
 .idea
-.codex/
 .agents/
 .kilo/
 .DS_Store

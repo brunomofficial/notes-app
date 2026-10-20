@@ -11,14 +11,16 @@ router.get(
         try {
             const user = req.user as any; // to refractor later
             const notes = await NoteModel.find({ userId: user._id });
-            const noteList = notes.map(n => ({
+            const notesRes = notes.map(n => ({
                 noteId: n._id,
                 title: n.title,
                 content: n.content,
                 createdAt: n.createdAt,
                 updatedAt: n.updatedAt,
             }));
-            res.json(noteList);
+
+            res.json({ notes: notesRes });
+
         }
         catch (error) {
             console.log(error);
@@ -42,7 +44,7 @@ router.post(
                 title: title || null,
                 content
             });
-            res.status(201).json(note);
+            res.status(201).json({ note: note });
         }
         catch (error) {
             console.log(error);
@@ -62,15 +64,17 @@ router.put(
                 return res.status(400).json({ error: "Note content is required" });
             }
             const user = req.user as any;
-            const updatedNote = await NoteModel.findOneAndUpdate(
+            const note = await NoteModel.findOneAndUpdate(
                 { _id: noteId, userId: user._id },
                 { title: title ?? "", content },
                 { returnDocument: 'after' }
             );
-            if (!updatedNote) {
+
+            if (!note) {
                 return res.status(404).json({ error: "Note not found or unauthorized" });
             }
-            res.status(200).json(updatedNote);
+
+            res.status(200).json({ note: note });
         }
         catch (error) {
             console.log(error);
@@ -86,16 +90,18 @@ router.delete(
         try { 
             const { noteId } = req.params;
             const user = req.user as any;
-            const deletedNote = await NoteModel.findOneAndDelete({
+            const note = await NoteModel.findOneAndDelete({
                 _id: noteId,
                 userId: user._id
             });
-            if (!deletedNote) {
+
+            if (!note) {
                 return res.status(404).json({ error: "Note not found or unauthorized" });
             }
+
             res.status(200).json({
                 message: "Note deleted successfully",
-                deletedNoteId: deletedNote._id,
+                noteId: note._id,
             })
         }
         catch (error) {
@@ -118,3 +124,4 @@ export default router;
     "__v": 0
   },
 */
+

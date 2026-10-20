@@ -1,4 +1,4 @@
-import React, {useRef, useState} from "react";
+import {useState} from "react";
 import toast from "react-hot-toast";
 import { api } from "../../utils/api"
 import { useApp } from "../../context/AppContext";
@@ -6,7 +6,8 @@ import ConfirmDialog from "../../components/ConfirmDialog/ConfirmDialog";
 import "./Profile.css";
 
 export default function Profile() {
-    const { user, setUser } = useApp(); 
+    const { user, setUser, notes } = useApp(); 
+
     if (!user) return <div>Loading...</div>
 
     const [showLogoutDialog, setShowLogoutDialog] = useState(false);
@@ -30,6 +31,7 @@ export default function Profile() {
         <div className="profile-page page">
             <h2>Profile</h2>
             <span>Email: {user.email}</span>
+            <span>Notes count: {notes.length}</span>
             <button 
                 onClick={() => setShowLogoutDialog(true)} 
                 className="logout-btn">
@@ -40,7 +42,11 @@ export default function Profile() {
                 <ConfirmDialog
                     title={"Log out"}
                     message={"Press confirm to log out"}
-                    onConfirm={() => {logout(); setShowLogoutDialog(false)}} 
+                    onConfirm={() => {
+                        logout(); 
+                        setShowLogoutDialog(false)
+                        }
+                    } 
                     onCancel={()=>setShowLogoutDialog(false)}
                 />
             )}

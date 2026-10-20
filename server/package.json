@@ -15,11 +15,11 @@
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
-      "version": "12.4.1",
+      "version": "12.11.2",
       "onFail": "download"
     }
   },
-  "packageManager": "pnpm@12.4.1",
+  "packageManager": "pnpm@12.11.2",
   "type": "module",
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
@@ -29,15 +29,17 @@
     "@types/passport": "^1.0.17",
     "@types/passport-local": "^1.0.38",
     "tsx": "^4.23.13",
-    "typescript": "^7.0.2"
+    "typescript": "^7.0.2",
+    "@types/cors": "^2.8.19",
+    "@types/express-rate-limit": "^6.0.2"
   },
   "dependencies": {
-    "@types/cors": "^2.8.19",
     "bcrypt": "^6.0.0",
     "connect-mongo": "^6.0.0",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "express-rate-limit": "^8.7.1",
     "express-session": "^1.19.0",
     "mongoose": "^9.10.0",
     "passport": "^0.7.0",

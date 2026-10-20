@@ -1,11 +1,12 @@
 import { Toaster } from "react-hot-toast";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { AppProvider, useApp } from "./context/AppContext";
 import Navbar from "./components/Navbar/Navbar";
 import Home from "./pages/Home/Home";
 import AuthPage from "./pages/AuthPage/AuthPage";
 import Profile from "./pages/Profile/Profile";
 import NoteEditor from "./pages/NoteEditor/NoteEditor";
+import NotFound from "./pages/NotFound/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import PublicRoute from "./components/PublicRoute/PublicRoute";
 
@@ -15,44 +16,21 @@ const Layout = () => {
   return (
     <>
       {user && <Navbar />}
+
       <Routes>
-        <Route 
-          path="/login"
-          element={
-            <PublicRoute>         
-              <AuthPage />
-            </PublicRoute>
-          }
-        />
+        <Route element={<PublicRoute />}>
+          <Route path="/login" element={<AuthPage />} />
+        </Route>
 
-        <Route 
-          path="/"
-          element={
-            <ProtectedRoute>         
-              <Home />
-            </ProtectedRoute>
-          }
-        />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/" element={<Home />} />
 
-        <Route 
-          path="/profile"
-          element={
-            <ProtectedRoute>         
-              <Profile />
-            </ProtectedRoute>
-          }
-        />
+          <Route path="/profile" element={<Profile />} />
 
-        <Route 
-          path="/notes/:noteId"
-          element={
-            <ProtectedRoute>         
-              <NoteEditor />
-            </ProtectedRoute>
-          }
-        />
+          <Route path="/notes/:noteId" element={<NoteEditor />} />
+        </Route>
 
-        <Route path="*" element={<Navigate to = "/" replace />}/>
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   );
@@ -63,7 +41,7 @@ export default function App() {
     <AppProvider>
       <main className="app">
         <Toaster position="bottom-center" />
-        <Layout />   
+        <Layout />
       </main>
     </AppProvider>
   )

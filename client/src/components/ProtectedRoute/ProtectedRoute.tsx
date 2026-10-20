@@ -1,11 +1,11 @@
 import { Navigate } from "react-router-dom";
 import { useApp } from "../../context/AppContext";
-import { type ReactNode } from "react";
+import { Outlet } from "react-router-dom";
 
-export default function ProtectedRoute({ children } : {children: ReactNode}) {
+export default function ProtectedRoute() {
     const { user } = useApp();
-    if (!user) {
-        return <Navigate to="/login" replace />;
-    }
-    return <>{children}</>
+    if (!user) 
+        return <Navigate to="/login" replace />
+    
+    return <Outlet />
 }

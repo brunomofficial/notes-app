@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import HomeIcon from "../icons/HomeIcon";
-import NewIcon from "../icons/NewIcon";
-import ProfileIcon from "../icons/ProfileIcon";
+import HomeIcon from "../../assets/icons/HomeIcon";
+import NewIcon from "../../assets/icons/NewIcon";
+import ProfileIcon from "../../assets/icons/ProfileIcon";
 import "./Navbar.css"
 
 export default function Navbar() {

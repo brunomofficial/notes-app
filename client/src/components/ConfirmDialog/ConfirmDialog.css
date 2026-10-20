@@ -1,14 +1,24 @@
 .confirm-dialog{
-    background: #d2fca1;
     border: none;
     border-radius: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: #ffffff55;
+    backdrop-filter: blur(20px);
+    min-height: 50%;
+    width: 350px;
+    flex-wrap: wrap;
+    border: 3px solid #00000072;
 }
 
 .confirm-dialog::backdrop {
-    background-color: #0000004e;
+    background-color: #0000002e;
+}
+
+.confirm-dialog p{
+    font-size: 1.3rem;
+    margin: auto;
 }
 
 .dialog-actions{
@@ -18,14 +28,20 @@
     justify-content: space-around;
 }
 
-.dialog-actions button {
+.dialog-actions button{
     height: 40px;
     font-weight: bold;
     border-radius: 10px;
+    font-size: 1.1rem;
+    transition: all 0.15s ease;
+}
+
+.dialog-actions button:hover{
+    transform: scale(1.1);
 }
 
 .confirm-dialog-btn{
-    background-color: #00000084;
+    background-color: #0b0b0bb6;
     color: #ffffffe6;
 }
 

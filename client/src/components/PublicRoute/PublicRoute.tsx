@@ -1,10 +1,12 @@
 import { Navigate } from "react-router-dom";
 import { useApp } from "../../context/AppContext";
-import { type ReactNode } from "react";
+import { Outlet } from "react-router-dom";
 
-
-export default function PublicRoute({ children } : { children: ReactNode }) {
+export default function PublicRoute() {
     const { user } = useApp();
-    if (user) return <Navigate to="/" replace />;
-    return <>{children}</>
+
+    if (user) 
+        return <Navigate to="/" replace />
+
+    return <Outlet />
 }

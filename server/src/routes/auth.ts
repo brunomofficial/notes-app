@@ -1,8 +1,23 @@
 import { Router,  type Request, type Response, type NextFunction } from "express";
+import rateLimit from "express-rate-limit";
 import passport from "../config/passport.js";
 import { requireAuth } from "../middleware/auth.js";
 
 const router: Router = Router();
+
+const MAX_REQUESTS = 1000;
+const WINDOW_MS = 60 * 60 * 1000; // 1 hr
+
+const loginLimiter = rateLimit({
+    windowMs: WINDOW_MS,
+    max: MAX_REQUESTS,
+    standardHeaders: true,
+    legacyHeaders: true,
+    message: {
+        status: 429,
+        error: `Too many login attempts, please try again after ${WINDOW_MS / (60 * 1000)} hour(s)`
+    },
+});
 
 router.get('/status', (req: Request, res: Response) => {
     if (req.isAuthenticated()) {
@@ -23,11 +38,12 @@ router.get('/status', (req: Request, res: Response) => {
     }
 });
 
-router.post('/login', (req: Request, res: Response, next: NextFunction) => {
+router.post('/login', loginLimiter, (req: Request, res: Response, next: NextFunction) => {
     passport.authenticate('local', (err: any, user: any, info: any) => {
         if (err) {
             return next(err);
         }
+
         if (!user) {
             return res.status(401).json({
                 error: info?.message || "Invalid credentials"
@@ -38,6 +54,7 @@ router.post('/login', (req: Request, res: Response, next: NextFunction) => {
             if (err) {
                 return next(err);
             }
+
             return res.status(200).json({
                 message: "Logged in successfully",
                 user: {
@@ -57,9 +74,10 @@ router.post(
             if (err) {
                 return next(err)
             }
+
             res.status(200).json({ message: "Logged out successfully" })
         })
     }
 );
 
-export default router
+export default router;

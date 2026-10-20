@@ -1,8 +1,13 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, type ReactNode } from "react";
 import "./ConfirmDialog.css"
 
-export default function ConfirmDialog({ title, message, onConfirm, onCancel }) {
-    const dialogRef = useRef(null);
+export default function ConfirmDialog(
+    { title, message, onConfirm, onCancel }: 
+    { title: string, message: string, onConfirm: () => void, onCancel: () => void }
+) {
+    
+    const dialogRef = useRef<HTMLDialogElement>(null);
+
     useEffect(() => {
         dialogRef.current?.showModal();
         return () => dialogRef.current?.close()
@@ -10,7 +15,7 @@ export default function ConfirmDialog({ title, message, onConfirm, onCancel }) {
     
     const closeDialog = () => dialogRef.current?.close();
     const handleConfirm = () => {
-        onConfirm();
+        onConfirm?.();
         closeDialog();
     }
     const handleCancel = () => {
@@ -20,7 +25,7 @@ export default function ConfirmDialog({ title, message, onConfirm, onCancel }) {
 
     return(
         <dialog ref={dialogRef} className="confirm-dialog">
-            <h3>{title}</h3>
+            <h2>{title}</h2>
             <p>{message}</p>
             <div className="dialog-actions">
                 <button onClick={handleCancel} className="cancel-dialog-btn">Cancel</button>

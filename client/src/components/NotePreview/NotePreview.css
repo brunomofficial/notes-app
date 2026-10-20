@@ -4,13 +4,25 @@
     display: flex;
     flex-direction: column;
     border-radius: 10px;
-    border: 3px solid #000000c9;
-    max-width: 350px;
+    box-shadow: 0 0 10px #0000003c;
+    min-height: 90px;
     width: max-content;
     min-width: 220px;
-    padding: 5px;
+    max-width: 310px;
+    padding: 10px 10px;
     cursor: pointer;
-    transition: all 0.6s ease;
+    transition: all 0.5s ease;
+    background-color: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(50px);
+}
+
+.note-preview::before{
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-top: 4px solid rgba(63, 55, 2, 0.453);
+    border-left: 4px solid rgba(63, 55, 2, 0.453);
+    border-radius: 10px;
 }
 
 .note-preview:hover{
@@ -26,11 +38,12 @@
     font-weight: bold;
     font-size: 1.1rem;
     text-decoration: underline;
-    color: #000000b4;
+    color: #0000009d;
 }
 
 .note-preview-content{
-    font-size: 1.4rem;
+    margin-top: 5px;
+    font-size: 1.3rem;
     max-height: 72px;
     overflow-y: hidden;
     flex-wrap: wrap;

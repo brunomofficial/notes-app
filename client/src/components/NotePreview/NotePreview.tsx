@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { type Note } from "../../context/AppContext";
 import "./NotePreview.css";
 
-export default function NotePreview({ note }: {note: Note}) {
+export default function NotePreview({ note }: { note: Note }) {
     const navigate = useNavigate();
     const noteId = note.noteId;
     

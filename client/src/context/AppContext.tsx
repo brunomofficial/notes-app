@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import { api } from "../utils/api";
+import toast from "react-hot-toast";
 
 export interface User {
     id: string;
@@ -8,10 +9,10 @@ export interface User {
 
 export interface Note {
     noteId: string;
-    title: string | null;
+    title?: string;
     content: string;
     createdAt?: string;
-    updatedAT?: string;
+    updatedAt?: string;
 }
 
 interface AppContextType {
@@ -29,24 +30,25 @@ export function AppProvider({ children }: { children: ReactNode }) {
     const [notes, setNotes] = useState<Note[]>([]);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const initAuth = async () => {
-            try {
-                const response = await api.get("/auth/status");
-                const data = await response.json();
-                if (!response.ok || !data.user) {
-                    return;
+useEffect(() => {
+        api.get("/auth/status")
+            .then(res => {
+                if (!res.ok) {
+                    return null;
+                };
+                return res.json()
+            })
+            .then(data => setUser({ id: data?.user?._id, email: data?.user?.email }))
+            .catch((err: Error) => {
+                if (err.name === "TypeError") {
+                    toast.error("Server unavailable. Please try again");
                 }
-                setUser({ id: data.user._id, email: data.user.email });
-            }
-            catch (err) {
-
-            }
-            finally {
-                setLoading(false);
-            }
-        }
-        initAuth();
+                else {
+                    toast.error(err?.message || String(err));
+                }
+                console.log(err)
+            })
+            .finally(() => setLoading(false))
     }, []);
 
     return (
@@ -60,4 +62,4 @@ export function useApp() {
     const ctx = useContext(AppContext);
     if (!ctx) throw new Error("useApp must be used within AppProvider");
     return ctx;
-}
+}  

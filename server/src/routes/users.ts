@@ -4,12 +4,6 @@ import { hashPassword } from "../utils/bcrypt.js";
 
 const router: Router = Router();
 
-router.get('/', async (req: Request, res: Response) => {
-    // only for testing
-    const users = await UserModel.find();
-    res.json(users);
-});
-
 router.post('/', async (req: Request, res: Response) => {
     try { 
         const { email, password } = req.body;

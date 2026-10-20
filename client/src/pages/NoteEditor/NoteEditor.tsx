@@ -1,19 +1,17 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom"
 import toast from "react-hot-toast";
-import { useApp, type Note } from "../../context/AppContext";
+import { useApp } from "../../context/AppContext";
 import { useEffect } from "react";
 import { api } from "../../utils/api";
-import "./NoteEditor.css"
+import SaveIcon from "../../assets/icons/SaveIcon";
+import DeleteIcon from "../../assets/icons/DeleteIcon";
+import ConfirmDialog from "../../components/ConfirmDialog/ConfirmDialog";
+import "./NoteEditor.css";
 
 export default function NoteEditor() {
     const navigate = useNavigate();
     const { noteId } = useParams<{noteId: string}>();
-
-    const { notes } = useApp();
-
-    const [title, setTitle] = useState("");
-    const [content, setContent] = useState("");
 
     if (!noteId) {
         navigate(-1);
@@ -21,15 +19,26 @@ export default function NoteEditor() {
         return;
     }
 
+    const { notes } = useApp();
+    const [title, setTitle] = useState("");
+    const [content, setContent] = useState("");
+    const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+
     const renderExistingNote = () => {
         const note = notes.find(n => n.noteId === noteId);
+
         if (!note) {
-            toast.error("Failed to select note");
-            return;
+            return toast.error("Failed to select note");
         }
-        setTitle(note.title || "");
-        setContent(note.content || "");
-        return;
+
+        setTitle(note?.title || "");
+
+        if (!note.content) {
+            setContent("");
+            return toast.error("Failed to fetch note content");
+        }
+
+        setContent(note.content);
     }
 
     useEffect(() => {
@@ -38,7 +47,7 @@ export default function NoteEditor() {
         }
     }, []);
 
-    const saveNote = () => {
+    const handleSaveNote = () => {
         if (content === "") {
             toast.error("Please add note content in order to save note");
             return;
@@ -53,33 +62,64 @@ export default function NoteEditor() {
     }
 
     const addNewNote = async (content: string, title?: string, ) => {
-        const response = await api.post("/notes", {title, content});
-        const data = await response.json();
-        if (!response.ok) {
-            toast.error("Failed to create note, please try again");
-            return;
+        try {
+            const response = await api.post("/notes", { title, content });
+            const data = await response.json();
+
+            if (!response.ok) {
+                toast.error("Failed to create note, please try again");
+                return;
+            }
+
+            const { note } = data;
+
+            toast.success("Note created successfully");
+
+            if (!note?._id) {
+                navigate("/");
+            }
+
+            navigate(`/notes/${note?._id}`);
+
+            console.log(data);
         }
-        toast.success("Note created successfully");
-        console.log(data);
-        navigate(`/notes/${data?._id}`);
+        catch (err: Error | any) {
+            console.error(err);
+            toast.error(err?.message);
+        }
     }
 
     const updateNote = async (content: string, title?: string, ) => {
-        const response = await api.put(`/notes/${noteId}`, {title, content});
-        const data = await response.json();
-        if (!response.ok) {
-            return toast.error("Failed to update note");
+        try {
+            const response = await api.put(`/notes/${noteId}`, { title, content });
+            const data = await response.json();
+            
+            if (!response.ok || !data.note) {
+                toast.error("Failed to update note");
+                return;
+            }
+
+            toast.success("Updated note successfully");
+            navigate(`/notes/${noteId}`);
         }
-        toast.success("Updated notes successfully");
-        navigate(`/notes/${noteId}`);
+        catch (err: Error | any) {
+            console.log(err);
+            toast.error(err?.message);
+        }
     }
 
-    const deleteNote = async () => {
+    const handleDeleteNote = async () => {
         if (!noteId) {
             return;
         }
+
+        setShowDeleteDialog(true);
+    }
+
+    const deleteNote = async () => {
         const response = await api.delete(`/notes/${noteId}`);
         const data = await response.json();
+
         if (!response.ok) {
             toast.error(data?.error || "Failed to delete note, please try again");
             return;
@@ -88,13 +128,47 @@ export default function NoteEditor() {
         navigate("/");
     }
 
+    const SaveButton = () => {
+        return (
+            <button 
+                onClick={handleSaveNote}
+                title="save note"
+            >
+                <SaveIcon />
+            </button>
+        );
+    }
+
+    const DeleteButton = () => {
+        return (
+            <button 
+                onClick={handleDeleteNote}
+                title="delete note"
+            >
+                <DeleteIcon />
+            </button>
+        );
+    }
+
     return (
         <div className="note-editor-page page">
+            {showDeleteDialog && 
+            <ConfirmDialog
+                title="Delete Note?"
+                message="Press confirm to delete note or cancel to cancel"
+                onConfirm={() => {
+                    deleteNote(); 
+                    setShowDeleteDialog(false)
+                    }
+                }
+                onCancel={() => setShowDeleteDialog(false)}
+             />}
+
             <h2>Note Editor</h2>
             <div className="note-container">
                 <div className="note-editor-btns">
-                    <button className="save-note-btn" onClick={saveNote}>save</button>
-                    <button className="del-note-btn" onClick={deleteNote}>del</button>
+                    <SaveButton />
+                    <DeleteButton />
                 </div>
                 <label>Title</label>
                 <input 

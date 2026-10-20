@@ -9,27 +9,28 @@
     margin: 30px 0;
     display: flex;
     flex-direction: column;
-    border: 2px solid #7c7a7a;
     flex: 1;
-    max-width: 500px;
-    padding: 10px;
+    max-width: 550px;
+    padding: 20px;
     border-radius: 20px;
     position: relative;
+    box-shadow: 0 0 15px #00000041;
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(50px);
 }
 
 .note-editor-btns{
     position: absolute;
-    top: 5px;
-    right: 10px;
+    top: 20px;
+    right: 20px;
 }
 
 .note-editor-btns button{
     border-radius: 5px;
     border: none;
-    width: 70px;
-    padding: 5px 10px;
     margin: 0 5px;
-    transition: all 0.3s ease;
+    transition: all 0.15s ease;
+    background-color: #00000000;
 }
 
 .note-editor-btns button:hover{
@@ -65,7 +66,11 @@
     border-radius: 10px;
     font-size: 1.3rem;
     font-weight: bold;
-    color: #000000bd
+    color: #000000bd;
+    background-color: #ffffffc1;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.506) inset;
+    border: none;
+    padding: 0 10px;
 }
 
 .note-input{
@@ -79,4 +84,16 @@
     padding: 10px;
     font-size: 1.3rem;
     font-family: Arial, Helvetica, sans-serif;
+    background-color: #ffffffc1;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.506) inset;
+    border: none;
+}
+
+@media (max-width: 767px) {
+    .note-container{
+        width: 90%;
+        height: 80%;
+        flex: none;
+        padding: 5px;
+    }
 }

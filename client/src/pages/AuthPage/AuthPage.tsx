@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type ReactElement, type ReactEventHandler, type ReactNode } from "react";
 import toast from "react-hot-toast";
 import { useApp } from "../../context/AppContext";
 import { api } from "../../utils/api";
@@ -10,12 +10,13 @@ export default function AuthPage() {
     const [password, setPassword] = useState("");
     const [passwordConfirmation, setPasswordConfirmation] = useState("");
     const [mode, setMode] = useState("login");
+    
     const changeMode = (e) => {
         e.preventDefault();
         mode === "login" ? setMode("signup") : setMode("login");
     }
 
-    const login = async (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
         if (!email && !password) {
             toast.error("Please provide an email and password");
@@ -31,15 +32,8 @@ export default function AuthPage() {
         }
 
         toast.promise(
-            (async () => {
-                const response = await api.post("/auth/login", { email, password });
-                const data = await response.json();
-                if (!response.ok) {
-                    throw new Error(data.error || "Login failed, please try again");
-                }
-                return data;
-            })(), {
-                loading: "Loggin in...",
+            login, {
+                loading: "Logging in...",
                 success: (data) => {
                     setUser(data.user);
                     console.log(data.user);
@@ -50,7 +44,16 @@ export default function AuthPage() {
         );   
     }
 
-    const signup = async (e) => {
+    const login = async () => {
+        const response = await api.post("/auth/login", { email, password });
+        const data = await response.json();
+        if (!response.ok) {
+            throw new Error(data.error || "Login failed, please try again");
+        }
+        return data;
+    }
+
+    const handleSignup = async (e) => {
         e.preventDefault();
         if (!email && !password && !passwordConfirmation) {
             toast.error("Please provide an email and confirm password");
@@ -74,14 +77,7 @@ export default function AuthPage() {
         }
 
         toast.promise(
-            (async () => {
-                const response = await api.post("/users", { email, password });
-                const data = await response.json();
-                if (!response.ok) {
-                    throw new Error(data.error || "Sign up failed, please try again");
-                }
-                return data;                
-            })(),
+            signup,
             {
                 loading: "Creating account...",
                 success: (data) => {
@@ -90,10 +86,18 @@ export default function AuthPage() {
                 },
                 error: (err) => err.message,
             }
-        )    
+        );    
+    }
+
+    const signup = async () => {
+        const response = await api.post("/users", { email, password });
+        const data = await response.json();
+        if (!response.ok) {
+            throw new Error(data.error || "Sign up failed, please try again");
+        }
+        return data;
     }
        
-
     return(
         <div className="auth-page-container">
             <div className="auth-forms-container">
@@ -120,7 +124,7 @@ export default function AuthPage() {
                             onChange={(e) => setPassword(e.target.value)}
                             required
                         />
-                        <button className="login-btn" onClick={login}>Log in</button>
+                        <button className="login-btn" onClick={handleLogin}>Log in</button>
                         <a
                             className="change-auth-mode-a"
                             onClick={changeMode}
@@ -162,7 +166,7 @@ export default function AuthPage() {
                             onChange={(e) => setPasswordConfirmation(e.target.value)}
                             required
                         />
-                        <button className="login-btn" onClick={signup}>Sign up</button>
+                        <button className="login-btn" onClick={handleSignup}>Sign up</button>
                         <a
                             className="change-auth-mode-a"
                             onClick={changeMode}
