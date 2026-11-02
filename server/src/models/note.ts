@@ -1,4 +1,4 @@
-import mongoose, {Schema, type InferSchemaType} from "mongoose";
+import mongoose, { Schema, type InferSchemaType } from "mongoose";
 
 const noteSchema = new Schema(
     {
@@ -16,7 +16,7 @@ const noteSchema = new Schema(
             type: String,
             default: "",
             required: true
-        }
+        },
     },
     {
         timestamps: true,

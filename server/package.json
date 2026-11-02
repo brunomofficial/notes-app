@@ -23,15 +23,17 @@
   "type": "module",
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
+    "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
+    "@types/express-rate-limit": "^6.0.2",
     "@types/express-session": "^1.19.0",
     "@types/node": "^26.5.1",
+    "@types/nodemailer": "^8.0.2",
     "@types/passport": "^1.0.17",
     "@types/passport-local": "^1.0.38",
+    "@types/validator": "^13.15.10",
     "tsx": "^4.23.13",
-    "typescript": "^7.0.2",
-    "@types/cors": "^2.8.19",
-    "@types/express-rate-limit": "^6.0.2"
+    "typescript": "^7.0.2"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
@@ -42,7 +44,9 @@
     "express-rate-limit": "^8.7.1",
     "express-session": "^1.19.0",
     "mongoose": "^9.10.0",
+    "nodemailer": "^10.3.1",
     "passport": "^0.7.0",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "validator": "^13.15.35"
   }
 }

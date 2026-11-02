@@ -10,8 +10,8 @@
     display: flex;
     flex-direction: column;
     flex: 1;
-    max-width: 550px;
-    padding: 20px;
+    max-width: 450px;
+    padding: 5px;
     border-radius: 20px;
     position: relative;
     box-shadow: 0 0 15px #00000041;

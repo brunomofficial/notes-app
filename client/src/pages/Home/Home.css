@@ -1,35 +1,47 @@
 .home-page{
     overflow-y: scroll;
-    scrollbar-width: none;
+    scrollbar-width: auto;
 }
 
 .home-page h3{
     margin-left: 15px;
+    margin-block: 0;
 }
 
 .note-list{
     display: flex;
     flex-direction: column;
-    margin: 10px;
+    margin-top: 5px;
+    margin-left: 5px;
+    margin-bottom: 10px;
     flex: 1;
 }
 
-.no-notes-yet-btn{
-    width: 350px;
-    height: 40px;
+.first-note-btn{
+    width: fit-content;
+    padding: 10px;
     border-radius: 7px;
     align-self: center;
-    transition: all 0.15s ease;
+    transition: all 0.3s ease;
     border: none;
     box-shadow: 0 0 15px #00000026;
-    font-size: 1.1rem;
-    color: #000000b2;
+    font-size: 1rem;
+    color: #00000083;
+    font-weight: bold;
+    letter-spacing: 1px;
 }
 
-.no-notes-yet-btn:hover{
-    transform: scale(1.02);
+.first-note-btn:hover{
+    background-color: #ffffffd4;
+    transform: scale(1.01);
 }
 
-.no-notes-yet-btn:active{
+.first-note-btn:active{
     transform: scale(1);
 }
+
+@media (max-width: 767px) {
+    .note-list{
+        margin-bottom: 40px;    
+    }
+}  

@@ -7,31 +7,38 @@ import "./Profile.css";
 
 export default function Profile() {
     const { user, setUser, notes } = useApp(); 
+    const [showLogoutDialog, setShowLogoutDialog] = useState(false);
 
     if (!user) return <div>Loading...</div>
 
-    const [showLogoutDialog, setShowLogoutDialog] = useState(false);
     const logout = async () => {
         try {
             const response = await api.post("/auth/logout");
             const data = await response.json() as any;
-            if (!response.ok) {
-                toast.error(data?.error || "Failed to log out, please try again");
-                return;
-            }
+
             toast.success(data.message);
-            setUser(null);
         }
         catch (err) {
             console.log(err)
+        }
+        finally {
+            setUser(null);
         }
     }
 
     return(
         <div className="profile-page page">
             <h2>Profile</h2>
-            <span>Email: {user.email}</span>
-            <span>Notes count: {notes.length}</span>
+            <div className="profile-details">
+                <div className="profile-detail-row">
+                    <span>Email</span>
+                    <span>{user.email}</span>
+                </div>
+                <div className="profile-detail-row">
+                    <span>Notes count</span>
+                    <span>{notes.length}</span>
+                </div>
+            </div>
             <button 
                 onClick={() => setShowLogoutDialog(true)} 
                 className="logout-btn">

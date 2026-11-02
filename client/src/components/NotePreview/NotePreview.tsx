@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { type Note } from "../../context/AppContext";
+import { type Note } from "../../models/note";
 import "./NotePreview.css";
 
 export default function NotePreview({ note }: { note: Note }) {

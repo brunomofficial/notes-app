@@ -13,39 +13,22 @@ export default function NoteEditor() {
     const navigate = useNavigate();
     const { noteId } = useParams<{noteId: string}>();
 
-    if (!noteId) {
-        navigate(-1);
-        toast.error("Failed to fetch note");
-        return;
-    }
-
-    const { notes } = useApp();
+    const { notes, setNotes } = useApp();
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
+
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
-    const renderExistingNote = () => {
+    useEffect(() => {
+        if (!noteId || noteId === "new") return;
+
         const note = notes.find(n => n.noteId === noteId);
 
-        if (!note) {
-            return toast.error("Failed to select note");
-        }
+        if (!note) return;
 
-        setTitle(note?.title || "");
-
-        if (!note.content) {
-            setContent("");
-            return toast.error("Failed to fetch note content");
-        }
-
-        setContent(note.content);
-    }
-
-    useEffect(() => {
-        if (noteId !== "new") {
-            renderExistingNote();
-        }
-    }, []);
+        setTitle(note.title || "");
+        setContent(note.content || "");
+    }, [noteId, notes]);
 
     const handleSaveNote = () => {
         if (content === "") {
@@ -73,11 +56,29 @@ export default function NoteEditor() {
 
             const { note } = data;
 
+            if (!note) {
+                toast.error("Error creating note");
+                return;
+            }
+
+            if (!note._id) {
+                toast.error("Error navigating to created note");
+                navigate("/");
+                return;
+            }
+
             toast.success("Note created successfully");
 
-            if (!note?._id) {
-                navigate("/");
-            }
+            setNotes([
+                ...notes,
+                {
+                    noteId: note._id,
+                    title: note.title || "",
+                    content: note.content,
+                    createdAt: note.createdAt,
+                    updatedAt: note.updatedAt,
+                }
+            ]);
 
             navigate(`/notes/${note?._id}`);
 
@@ -100,6 +101,21 @@ export default function NoteEditor() {
             }
 
             toast.success("Updated note successfully");
+
+            const { note } = data;
+
+            if (!note._id) {
+                toast.error("Error navigating to note");
+                navigate("/");
+                return;
+            }
+
+            setNotes(notes.map(n => 
+                n.noteId === noteId
+                    ? { ...n, title: note.title || "", content: note.content }
+                    : n
+            ));
+
             navigate(`/notes/${noteId}`);
         }
         catch (err: Error | any) {
@@ -117,15 +133,26 @@ export default function NoteEditor() {
     }
 
     const deleteNote = async () => {
-        const response = await api.delete(`/notes/${noteId}`);
-        const data = await response.json();
+        if (!noteId || noteId === "new") return;
 
-        if (!response.ok) {
-            toast.error(data?.error || "Failed to delete note, please try again");
-            return;
+        try {
+            const response = await api.delete(`/notes/${noteId}`);
+            const data = await response.json();
+
+            if (!response.ok) {
+                toast.error(data?.error || "Failed to delete note, please try again");
+                return;
+            }
+
+            setNotes(notes.filter(note => note.noteId !== noteId));
+
+            toast.success("Note deleted successfully");
+            navigate("/");
         }
-        toast.success("Note deleted successfully");
-        navigate("/");
+        catch (err: Error | any) {
+            toast.error(err?.message);
+            console.log(err);
+        }
     }
 
     const SaveButton = () => {
@@ -167,9 +194,10 @@ export default function NoteEditor() {
             <h2>Note Editor</h2>
             <div className="note-container">
                 <div className="note-editor-btns">
+                    {noteId !== "new" && <DeleteButton />}
                     <SaveButton />
-                    <DeleteButton />
                 </div>
+
                 <label>Title</label>
                 <input 
                     className="title-input" 
@@ -177,6 +205,7 @@ export default function NoteEditor() {
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                 />
+
                 <label>Content</label>
                 <textarea 
                     className="note-input"

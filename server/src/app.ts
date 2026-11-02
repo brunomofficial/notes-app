@@ -6,7 +6,6 @@ import passport from "./config/passport.js";
 import cors from "cors";
 import rateLimit from "express-rate-limit";
 import "dotenv/config";
-import usersRouter from "./routes/users.js";
 import notesRouter from "./routes/notes.js";
 import authRouter from "./routes/auth.js";
 
@@ -26,7 +25,7 @@ app.use(express.json());
 app.use(urlencoded({ extended: true }));
 
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: process.env.CLIENT_ORIGIN || "http://localhost:5173",
     credentials: true,
 }));
 
@@ -39,8 +38,11 @@ app.use(
             mongoUrl: MONGO_URI,
         }),
         cookie: {
-            maxAge: 1000 * 60 * 60 * 24 * 7 // 1 wk
-        }
+            maxAge: 1000 * 60 * 60 * 24 * 7, // 1 wk
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
+        },
     }), 
 );
 
@@ -63,7 +65,6 @@ app.use(globaLimiter);
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/api/users', usersRouter);
 app.use('/api/notes', notesRouter);
 app.use('/api/auth', authRouter);
 
