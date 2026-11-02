@@ -11,11 +11,11 @@ import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import PublicRoute from "./components/PublicRoute/PublicRoute";
 
 const Layout = () => {
-  const { user } = useApp();
+  const { user, guestMode } = useApp();
 
   return (
     <>
-      {user && <Navbar />}
+      {(user || guestMode) && <Navbar />}
 
       <Routes>
         <Route element={<PublicRoute />}>

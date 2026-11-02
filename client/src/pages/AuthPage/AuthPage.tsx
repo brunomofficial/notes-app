@@ -1,16 +1,24 @@
 import { useState, type MouseEvent } from "react";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import { useApp } from "../../context/AppContext";
 import { api } from "../../utils/api";
 import "./AuthPage.css";
 
 export default function AuthPage() {
-    const { setUser, setNotes } = useApp();
+    const navigate = useNavigate();
+    const { setUser, setNotes, setGuestMode } = useApp();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [passwordConfirmation, setPasswordConfirmation] = useState("");
     const [verificationCode, setVerificationCode] = useState("");
     const [mode, setMode] = useState("login");
+
+    const handleGuestModeToggle = (e: MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        setGuestMode(true);
+        navigate("/");
+    }
 
     const changeMode = (e: MouseEvent<HTMLSpanElement>, targetMode?: string) => {
         e.preventDefault();
@@ -68,6 +76,7 @@ export default function AuthPage() {
             throw new Error(notesData.error || "Failed to load notes");
         }
 
+        setGuestMode(false);
         setNotes(notesData.notes);
 
         return data;
@@ -148,10 +157,6 @@ export default function AuthPage() {
         }
 
         return data;
-    }
-
-    const handleGuestModeToggle = (e: MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
     }
 
     return (

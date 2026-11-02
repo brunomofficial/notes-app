@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, type ReactNode } from "react";
+import { useEffect, useRef } from "react";
 import "./ConfirmDialog.css"
 
 export default function ConfirmDialog(

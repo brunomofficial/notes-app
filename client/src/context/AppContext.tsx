@@ -4,24 +4,70 @@ import { type User } from "../models/user";
 import { type Note } from "../models/note";
 import { api } from "../utils/api";
 
+const GUEST_MODE_KEY = "notes-app-guest-mode";
+const GUEST_NOTES_KEY = "notes-app-guest-notes";
+
 interface AppContextType {
     user: User | null;
     setUser: (user: User | null) => void;
     notes: Note[];
     setNotes: (notes: Note[]) => void;
     loading: boolean;
+    guestMode: boolean;
+    setGuestMode: (enabled: boolean) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export function AppProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<User | null>(null);
+
+    const [guestMode, setGuestModeState] = useState(
+        () => localStorage.getItem(GUEST_MODE_KEY) === "true"
+    );
+
+    const setGuestMode = (enabled: boolean) => {
+        setGuestModeState(enabled);
+
+        if (enabled) {
+            localStorage.setItem(GUEST_MODE_KEY, "true");
+        }
+        else {
+            localStorage.removeItem(GUEST_MODE_KEY);
+        }
+    }   
+
     const [notes, setNotes] = useState<Note[]>([]);
+    const [guestNotesLoaded, setGuestNotesLoaded] = useState(false);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const loadAppData = async () => {
             try {
+                if (guestMode) {
+                    setUser(null);
+                    const savedNotes = localStorage.getItem(GUEST_NOTES_KEY);
+
+                    try {
+                        if (savedNotes) {
+                            const parsedNotes: unknown = JSON.parse(savedNotes);
+                            setNotes(Array.isArray(parsedNotes) ? parsedNotes as Note[] : []);
+                        }
+                        else {
+                            setNotes([]);
+                        }
+
+                    } catch {
+                        localStorage.removeItem(GUEST_NOTES_KEY);
+                        setNotes([]);
+                        toast.error("Could not load saved guest notes");
+                    }  finally {
+                        setGuestNotesLoaded(true);
+                    }
+
+                    return;
+                }
+
                 const statusRes = await api.get("/auth/status");
 
                 if (!statusRes.ok) {
@@ -61,10 +107,26 @@ export function AppProvider({ children }: { children: ReactNode }) {
         }
 
         loadAppData();
-    }, []);
+    }, [guestMode]);
+
+    useEffect(() => {
+        if (!guestMode || !guestNotesLoaded) return;
+
+        localStorage.setItem(GUEST_NOTES_KEY, JSON.stringify(notes));
+    }, [guestMode, guestNotesLoaded, notes]);
 
     return (
-        <AppContext.Provider value={{user, setUser, notes, setNotes, loading}}>
+        <AppContext.Provider 
+            value={{
+                user, 
+                setUser, 
+                notes, 
+                setNotes, 
+                loading,
+                guestMode,
+                setGuestMode
+            }}
+        >
             {children}
         </AppContext.Provider>
     );

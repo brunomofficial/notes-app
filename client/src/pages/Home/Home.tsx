@@ -18,7 +18,7 @@ export default function Home() {
                 <button className="first-note-btn"
                     onClick={() => { navigate("/notes/new") }}
                 >
-                    Create a new note
+                    Create a note
                 </button>
             );
         }

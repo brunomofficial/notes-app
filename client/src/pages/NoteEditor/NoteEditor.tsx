@@ -1,8 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom"
 import toast from "react-hot-toast";
 import { useApp } from "../../context/AppContext";
-import { useEffect } from "react";
 import { api } from "../../utils/api";
 import SaveIcon from "../../assets/icons/SaveIcon";
 import DeleteIcon from "../../assets/icons/DeleteIcon";
@@ -11,9 +10,9 @@ import "./NoteEditor.css";
 
 export default function NoteEditor() {
     const navigate = useNavigate();
-    const { noteId } = useParams<{noteId: string}>();
+    const { noteId } = useParams<{ noteId: string }>();
 
-    const { notes, setNotes } = useApp();
+    const { notes, setNotes, guestMode } = useApp();
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
 
@@ -30,21 +29,7 @@ export default function NoteEditor() {
         setContent(note.content || "");
     }, [noteId, notes]);
 
-    const handleSaveNote = () => {
-        if (content === "") {
-            toast.error("Please add note content in order to save note");
-            return;
-        }
-
-        if (noteId === "new") {
-            addNewNote(content, title);
-        }
-        else {
-            updateNote(content, title);
-        }
-    }
-
-    const addNewNote = async (content: string, title?: string, ) => {
+    const addNewNote = useCallback(async (content: string, title?: string) => {
         try {
             const response = await api.post("/notes", { title, content });
             const data = await response.json();
@@ -81,20 +66,18 @@ export default function NoteEditor() {
             ]);
 
             navigate(`/notes/${note?._id}`);
-
-            console.log(data);
         }
         catch (err: Error | any) {
             console.error(err);
             toast.error(err?.message);
         }
-    }
+    }, [navigate, notes, setNotes]); 
 
-    const updateNote = async (content: string, title?: string, ) => {
+    const updateNote = useCallback(async (content: string, title?: string) => {
         try {
             const response = await api.put(`/notes/${noteId}`, { title, content });
             const data = await response.json();
-            
+
             if (!response.ok || !data.note) {
                 toast.error("Failed to update note");
                 return;
@@ -110,7 +93,7 @@ export default function NoteEditor() {
                 return;
             }
 
-            setNotes(notes.map(n => 
+            setNotes(notes.map(n =>
                 n.noteId === noteId
                     ? { ...n, title: note.title || "", content: note.content }
                     : n
@@ -122,7 +105,73 @@ export default function NoteEditor() {
             console.log(err);
             toast.error(err?.message);
         }
-    }
+    }, [navigate, noteId, notes, setNotes]); 
+
+    const handleSaveNote = useCallback(() => {
+        if (content === "") {
+            toast.error("Please add note content in order to save note");
+            return;
+        }
+
+        if (guestMode) {
+            const now = new Date().toISOString();
+
+            if (noteId === "new") {
+                const newNote = {
+                    noteId: crypto.randomUUID(),
+                    title,
+                    content,
+                    createdAt: now,
+                    updatedAt: now,
+                };
+
+                setNotes([...notes, newNote]);
+                toast.success("Note created");
+                navigate(`/notes/${newNote.noteId}`);
+                return;
+            }
+
+            if (!noteId) return;
+
+            setNotes(notes.map(note =>
+                note.noteId === noteId
+                    ? { ...note, title, content, updatedAt: now }
+                    : note
+            ));
+
+            toast.success("Note updated");
+            return;
+        }
+
+        if (noteId === "new") {
+            addNewNote(content, title);
+        }
+        else {
+            updateNote(content, title);
+        }
+    }, [
+        addNewNote,
+        content, 
+        guestMode, 
+        navigate, 
+        noteId, 
+        notes, 
+        setNotes, 
+        title,
+        updateNote
+    ]);
+
+    useEffect(() => {
+        const handleShortcut = (e: KeyboardEvent) => {
+            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s") {
+                e.preventDefault();
+                handleSaveNote();
+            }
+        }
+
+        window.addEventListener("keydown", handleShortcut);
+        return () => window.removeEventListener("keydown", handleShortcut);
+    }, [handleSaveNote]);
 
     const handleDeleteNote = async () => {
         if (!noteId) {
@@ -134,6 +183,13 @@ export default function NoteEditor() {
 
     const deleteNote = async () => {
         if (!noteId || noteId === "new") return;
+
+        if (guestMode) {
+            setNotes(notes.filter(note => note.noteId !== noteId));
+            toast.success("Note deleted");
+            navigate("/");
+            return;
+        }
 
         try {
             const response = await api.delete(`/notes/${noteId}`);
@@ -157,7 +213,7 @@ export default function NoteEditor() {
 
     const SaveButton = () => {
         return (
-            <button 
+            <button
                 onClick={handleSaveNote}
                 title="save note"
             >
@@ -168,7 +224,7 @@ export default function NoteEditor() {
 
     const DeleteButton = () => {
         return (
-            <button 
+            <button
                 onClick={handleDeleteNote}
                 title="delete note"
             >
@@ -179,17 +235,17 @@ export default function NoteEditor() {
 
     return (
         <div className="note-editor-page page">
-            {showDeleteDialog && 
-            <ConfirmDialog
-                title="Delete Note?"
-                message="Press confirm to delete note or cancel to cancel"
-                onConfirm={() => {
-                    deleteNote(); 
-                    setShowDeleteDialog(false)
+            {showDeleteDialog &&
+                <ConfirmDialog
+                    title="Delete Note?"
+                    message="Press confirm to delete note or cancel to cancel"
+                    onConfirm={() => {
+                        deleteNote();
+                        setShowDeleteDialog(false)
                     }
-                }
-                onCancel={() => setShowDeleteDialog(false)}
-             />}
+                    }
+                    onCancel={() => setShowDeleteDialog(false)}
+                />}
 
             <h2>Note Editor</h2>
             <div className="note-container">
@@ -199,15 +255,15 @@ export default function NoteEditor() {
                 </div>
 
                 <label>Title</label>
-                <input 
-                    className="title-input" 
-                    type="text" 
+                <input
+                    className="title-input"
+                    type="text"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                 />
 
                 <label>Content</label>
-                <textarea 
+                <textarea
                     className="note-input"
                     value={content}
                     onChange={(e) => setContent(e.target.value)}

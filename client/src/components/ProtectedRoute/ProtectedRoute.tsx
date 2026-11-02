@@ -3,11 +3,11 @@ import { useApp } from "../../context/AppContext";
 import { Outlet } from "react-router-dom";
 
 export default function ProtectedRoute() {
-    const { user, loading } = useApp();
+    const { user, guestMode, loading } = useApp();
 
     if (loading) return null;
     
-    if (!user) 
+    if (!user && !guestMode) 
         return <Navigate to="/login" replace />
     
     return <Outlet />
