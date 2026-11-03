@@ -12,8 +12,10 @@
     backdrop-filter: blur(20px);
     border-radius: 10px;
     box-shadow: 5px 5px 10px 2px #00000026;
-    height: 75vh;
+    height: fit-content;
+    max-height: calc(100dvh - 2rem);
     width: fit-content;
+    overflow-y: auto;
 }
 
 .auth-nav{
@@ -44,21 +46,23 @@
 .auth-form{
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: flex-start;
+    gap: 10px;
     border-radius: 10px;
     padding-inline: 30px;
-    padding-block: 0 30px;
-    margin: auto;
+    padding-block: 10px 20px;
+    margin: 0 auto;
 }
 
 .auth-form h3{
     color: #484848;
+    margin: 8px 0 4px;
 }
 
 .input-field{
     display: flex;
     flex-direction: column;
-    margin: 5px 0;
+    margin: 0;
 }
 
 .input-field label{
@@ -80,12 +84,12 @@
 }
 
 .auth-buttons{
-    margin-top: 10px;
+    margin-top: 2px;
 }
 
 .login-btn{
     width: 100%;
-    margin: 10px auto;
+    margin: 5px auto;
     font-size: 1.3rem;
     color: #ffffff;
     background-color: #5eaa02;
@@ -108,7 +112,7 @@
 
 .guest-mode-btn{
     width: 100%;
-    margin: 10px auto;
+    margin: 5px auto;
     font-size: 1.3rem;
     color: #000000ab;
     background-color: #ffffffec;
@@ -146,7 +150,7 @@
 @media (max-width: 767px) {
     .auth-forms-container{
         width: 300px;
-        height: fit-content;
+        max-height: calc(100dvh - 2rem);
     }
 
     .auth-form .input-field{
