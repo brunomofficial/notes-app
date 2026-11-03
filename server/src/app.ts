@@ -38,6 +38,7 @@ app.use(
         secret: process.env.SESSION_SECRET,
         resave: false,
         saveUninitialized: false,
+        proxy: true,
         store: MongoStore.create({
             mongoUrl: MONGO_URI,
         }),
