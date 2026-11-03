@@ -1,10 +1,10 @@
 import express, { type Express, type Request, type Response, type NextFunction, urlencoded} from "express";
 import mongoose from "mongoose"
 import session from "express-session";
-import MongoStore from "connect-mongo";
+import { MongoStore } from "connect-mongo";
 import passport from "./config/passport.js";
 import cors from "cors";
-import rateLimit from "express-rate-limit";
+import { rateLimit } from "express-rate-limit";
 import dotenv from "dotenv";
 import notesRouter from "./routes/notes.js";
 import authRouter from "./routes/auth.js";
