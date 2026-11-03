@@ -5,9 +5,11 @@ import MongoStore from "connect-mongo";
 import passport from "./config/passport.js";
 import cors from "cors";
 import rateLimit from "express-rate-limit";
-import "dotenv/config";
+import dotenv from "dotenv";
 import notesRouter from "./routes/notes.js";
 import authRouter from "./routes/auth.js";
+
+dotenv.config();
 
 const app: Express = express();
 
@@ -20,6 +22,8 @@ if (!MONGO_URI) {
 if (!process.env.SESSION_SECRET) {
     throw new Error("SESSION_SECRET is missing from .env");
 }
+
+app.set("trust proxy", 2);
 
 app.use(express.json());
 app.use(urlencoded({ extended: true }));
@@ -78,6 +82,7 @@ mongoose
     });
 
 app.get('/', (req: Request, res: Response) => {
+    console.log(req.ip);
     res.status(200).json({ message: "API is running" });
 });
 

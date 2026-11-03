@@ -280,7 +280,7 @@ export default function AuthPage() {
 
                 {mode === "email-confirmation" && (
                     <form className="confirmation-form auth-form">
-                        <h3>Enter confirmation code</h3>
+                        <h3>Enter confirmation code sent to {email || "your email"}</h3>
                         <label htmlFor="">Verification code</label>
                         <input 
                             className="verification-code-input"

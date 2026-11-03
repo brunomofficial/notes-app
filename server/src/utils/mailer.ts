@@ -1,28 +1,29 @@
-import nodemailer from "nodemailer";
-import "dotenv/config"
+import dotenv from "dotenv";
 
-const transporter = nodemailer.createTransport({
-    host: process.env.BREVO_SMTP_HOST || 'smtp-relay.brevo.com',
-    port: Number(process.env.BREVO_SMTP_PORT) || 587,
-    secure: false,
-    auth: {
-        user: process.env.BREVO_SMTP_USER,
-        pass: process.env.BREVO_SMTP_KEY,
-    }
-});
+dotenv.config();
 
 export const sendVerificationEmail = async (toEmail: string, code: string | number) => {
-    await transporter.sendMail({
-        from: `"Notes App" <${process.env.BREVO_SENDER_EMAIL}>`,
-        to: toEmail,
-        subject: "Verify your email address",
-        html: `
-            <div style="font-family: Arial, sans-serif; padding: 20px;">
+    
+    const res = await fetch("https://api.brevo.com/v3/smtp/email", {
+        method: "POST",
+        headers: {
+            "api-key": process.env.BREVO_API_KEY!,
+            "content-type": "application/json",
+            accept: "application/json",
+        },
+        body: JSON.stringify({
+            sender: { name: "Notes App", email: process.env.BREVO_SENDER_EMAIL },
+            to: [{ email: toEmail }],
+            subject: "Verify your email address",
+            htmlContent: `
                 <h2>Welcome to Notes App!</h2>
                 <p>Please use the verification code below to complete your sign up:</p>
                 <h1 style="letter-spacing: 2px">${code}</h1>
                 <p>This code will expire in 10 minutes</p>
-            </div>
-        `
+            `
+        }),
     });
+
+    if (!res.ok) throw new Error(`Brevo ${res.status}: ${await res.text()}`);
+
 }

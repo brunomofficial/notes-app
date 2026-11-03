@@ -8,6 +8,9 @@ import DeleteIcon from "../../assets/icons/DeleteIcon";
 import ConfirmDialog from "../../components/ConfirmDialog/ConfirmDialog";
 import "./NoteEditor.css";
 
+const MAX_NOTE_CHARS = 10_000;
+const MAX_NOTES_PER_USER = 200;
+
 export default function NoteEditor() {
     const navigate = useNavigate();
     const { noteId } = useParams<{ noteId: string }>();
@@ -35,7 +38,7 @@ export default function NoteEditor() {
             const data = await response.json();
 
             if (!response.ok) {
-                toast.error("Failed to create note, please try again");
+                toast.error(data?.error || "Failed to create note, please try again");
                 return;
             }
 
@@ -79,7 +82,7 @@ export default function NoteEditor() {
             const data = await response.json();
 
             if (!response.ok || !data.note) {
-                toast.error("Failed to update note");
+                toast.error(data?.error || "Failed to update note");
                 return;
             }
 
@@ -110,6 +113,11 @@ export default function NoteEditor() {
     const handleSaveNote = useCallback(() => {
         if (content === "") {
             toast.error("Please add note content in order to save note");
+            return;
+        }
+
+        if (title.length + content.length > MAX_NOTE_CHARS) {
+            toast.error(`Title and content must total no more than ${MAX_NOTE_CHARS}`);
             return;
         }
 
@@ -144,6 +152,10 @@ export default function NoteEditor() {
         }
 
         if (noteId === "new") {
+            if (notes.length >= MAX_NOTES_PER_USER) {
+                toast.error(`You can have up to ${MAX_NOTES_PER_USER} notes`);
+                return;
+            }
             addNewNote(content, title);
         }
         else {
