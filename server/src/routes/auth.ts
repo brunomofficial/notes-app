@@ -1,5 +1,5 @@
 import { Router,  type Request, type Response, type NextFunction } from "express";
-import rateLimit from "express-rate-limit";
+import { rateLimit } from "express-rate-limit";
 import passport from "../config/passport.js";
 import { UserModel } from "../models/user.js";
 import { hashPassword } from "../utils/bcrypt.js";
