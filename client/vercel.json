@@ -1,6 +1,6 @@
 {
     "rewrites": [
-        { "source": "/api/:path*", "destination": "https://*.onrender.com/api/:path*" },
+        { "source": "/api/:path*", "destination": "https://notesapp-82rg4alh.back4.app/api/:path*" },
         { "source": "/(.*)", "destination": "/index.html" }
     ]
 }
