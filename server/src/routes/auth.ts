@@ -59,6 +59,13 @@ router.get('/status', (req: Request, res: Response) => {
 });
 
 router.post('/login', loginLimiter, (req: Request, res: Response, next: NextFunction) => {
+    console.info("Login proxy diagnostics", {
+        nodeEnv: process.env.NODE_ENV,
+        forwardedProto: req.get("x-forwarded-proto"),
+        protocol: req.protocol,
+        secure: req.secure,
+    });
+
     passport.authenticate('local', (err: any, user: any, info: any) => {
         if (err) {
             return next(err);
