@@ -5,6 +5,8 @@ import { useApp } from "../../context/AppContext";
 import { api } from "../../utils/api";
 import "./AuthPage.css";
 
+const MIN_PASSWORD_LENGTH = 9;
+
 export default function AuthPage() {
     const navigate = useNavigate();
     const { setUser, setNotes, setGuestMode } = useApp();
@@ -94,6 +96,10 @@ export default function AuthPage() {
         }
         if (!password) {
             toast.error("Please provide a password");
+            return;
+        }
+        if (password.length < MIN_PASSWORD_LENGTH) {
+            toast.error(`Password must be at least ${MIN_PASSWORD_LENGTH} characters long`);
             return;
         }
         if (!passwordConfirmation) {
@@ -249,8 +255,11 @@ export default function AuthPage() {
                                 id="signuPasswordInput"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
+                                minLength={MIN_PASSWORD_LENGTH}
+                                title={`Password must be at least ${MIN_PASSWORD_LENGTH} characters long`}
                                 required
                             />
+                            <small>Password must be at least {MIN_PASSWORD_LENGTH} characters long.</small>
                         </div>
 
                         <div className="input-field">
@@ -261,6 +270,8 @@ export default function AuthPage() {
                                 id="passwordInputConfirmation"
                                 value={passwordConfirmation}
                                 onChange={(e) => setPasswordConfirmation(e.target.value)}
+                                minLength={MIN_PASSWORD_LENGTH}
+                                title={`Password must be at least ${MIN_PASSWORD_LENGTH} characters long`}
                                 required
                             />
                         </div>

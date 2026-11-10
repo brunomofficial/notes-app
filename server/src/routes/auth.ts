@@ -8,6 +8,7 @@ import { PendingUserModel } from "../models/pendingUser.js";
 import { sendVerificationEmail } from "../utils/mailer.js";
 
 const router: Router = Router();
+const MIN_PASSWORD_LENGTH = 9;
 
 const isDuplicateKeyError = (error: unknown): boolean => {
     return typeof error === "object"
@@ -99,6 +100,12 @@ router.post('/signup', signupLimiter, async (req: Request, res: Response, next: 
 
         if (!email || !password) {
             return res.status(400).json({ error: "Please provide an email and a password" })
+        }
+
+        if (typeof password !== "string" || password.length < MIN_PASSWORD_LENGTH) {
+            return res.status(400).json({
+                error: `Password must be at least ${MIN_PASSWORD_LENGTH} characters long`,
+            });
         }
 
         const existingUser = await UserModel.findOne({ email });

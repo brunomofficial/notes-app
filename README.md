@@ -16,7 +16,7 @@ A full-stack notes application for creating, editing, and deleting notes. Authen
 
 [notes-app-brunomofficial.vercel.app](https://notes-app-brunomofficial.vercel.app)
 
-## Tech stack
+##  Stack
 
 - **Frontend:** React, TypeScript, Vite, React Router
 - **Backend:** Node.js, Express, TypeScript, Passport, `express-session`
@@ -40,47 +40,8 @@ A full-stack notes application for creating, editing, and deleting notes. Authen
 - A MongoDB database, local or hosted
 - A Brevo API key and verified sender email for account verification emails
 
-## Local development
 
-### 1. Install dependencies
-
-Install dependencies in both application directories:
-
-```bash
-cd server
-pnpm install
-
-cd ../client
-pnpm install
-```
-
-### 2. Configure the server
-
-Create `server/.env` with the following values:
-
-```dotenv
-NODE_ENV=development
-PORT=3000
-
-# Used in development when NODE_ENV is development
-MONGO_LOCALHOST_URI=mongodb://127.0.0.1:27017/notes-app
-
-# Used outside development, or as a fallback
-MONGO_URI=mongodb+srv://<username>:<password>@<cluster>/<database>
-
-SESSION_SECRET=replace-with-a-long-random-secret
-
-# The frontend origin allowed to make credentialed requests
-CLIENT_ORIGIN_LOCALHOST=http://localhost:5173
-CLIENT_ORIGIN=https://your-client-domain.example
-
-BREVO_API_KEY=your-brevo-api-key
-BREVO_SENDER_EMAIL=sender@example.com
-```
-
-Do not commit `.env` files or real credentials. In development, `MONGO_LOCALHOST_URI` takes precedence when it is set. In other environments, `MONGO_URI` is used.
-
-### 3. Start the applications
+### Starting the applications
 
 Run the API and frontend in separate terminals:
 
@@ -98,7 +59,7 @@ pnpm dev
 
 The frontend is served at <http://localhost:5173> and the API at <http://localhost:3000>. Vite proxies `/api` requests to the local API server. The API health endpoint is available at <http://localhost:3000/health>.
 
-## Available scripts
+## Scripts
 
 ### Client
 
@@ -139,37 +100,6 @@ The frontend communicates with the backend under the `/api` prefix. Authenticate
 | `PUT` | `/api/notes/:noteId` | Update a note |
 | `DELETE` | `/api/notes/:noteId` | Delete a note |
 
-## Production deployment
-
-### Client
-
-Build the frontend from `client/` with `pnpm build`. The existing `client/vercel.json` rewrites `/api/*` requests to the configured deployed server URL and routes other paths to the SPA entry point.
-
-### Server
-
-Build and start the server with:
-
-```bash
-cd server
-pnpm build
-pnpm start
-```
-
-The repository also includes a `server/Dockerfile` for containerized deployment. Set `NODE_ENV=production`, `MONGO_URI`, `SESSION_SECRET`, `CLIENT_ORIGIN`, `BREVO_API_KEY`, and `BREVO_SENDER_EMAIL` in the deployment environment. Use a strong, unique session secret and ensure the client origin exactly matches the deployed frontend origin.
-
-## Contributing
-
-1. Create a focused branch from `main`.
-2. Make the smallest change that addresses the issue or feature.
-3. Run the relevant checks before opening a pull request:
-
-   ```bash
-   cd client && pnpm lint && pnpm build
-   cd ../server && pnpm typecheck && pnpm build
-   ```
-
-4. Describe the change, testing performed, and any environment or deployment changes in the pull request.
-
 ## License
 
-No license has been specified for this repository yet.
+This project is licensed under the [MIT License](LICENSE).
