@@ -29,18 +29,18 @@
 .auth-mode-toggle{
     font-weight: bold;
     font-size: 1.1rem;
-    color: #000000b7;
+    color: var(--muted-text);
     padding: 5px 0;
     border-bottom: 3px solid transparent;
     cursor: pointer;
 }
 
 .auth-mode-toggle:hover{
-    color: black;
+    color: var(--text-color);
 }
 
 .auth-mode-toggle.active{
-    border-color:  black;
+    border-color: var(--text-color);
 }
 
 .auth-form{
@@ -55,7 +55,7 @@
 }
 
 .auth-form h3{
-    color: #484848;
+    color: var(--text-color);
     margin: 8px 0 4px;
 }
 
@@ -68,7 +68,7 @@
 .input-field label{
     font-size: 1rem;
     font-weight: bold;
-    color: #494949;
+    color: var(--muted-text);
 }
 
 .auth-form input[type="email"], 
@@ -76,10 +76,10 @@
 {
     padding: 7px 10px;
     border-radius: 10px;
-    background-color: #f2fcf2e9;
+    background-color: var(--input-background);
     font-weight: bold;
     font-size: 1.2rem;
-    color: #000000c8;
+    color: var(--text-color);
     width: 100%;
 }
 
@@ -114,8 +114,8 @@
     width: 100%;
     margin: 5px auto;
     font-size: 1.3rem;
-    color: #000000ab;
-    background-color: #ffffffec;
+    color: var(--text-color);
+    background-color: var(--surface-strong);
     box-shadow: 2px 2px 5px #0000002d;
     border: none;
     border-radius: 10px;
@@ -124,7 +124,7 @@
 }
 
 .guest-mode-btn:hover{
-    background-color: #fffffff8;
+    background-color: var(--surface);
 }
 
 .change-auth-mode-a{
@@ -133,7 +133,7 @@
     cursor: pointer;
     text-decoration: underline;
     font-style: italic;
-    color: #0000009c;
+    color: var(--muted-text);
 }
 
 .auth-form button{

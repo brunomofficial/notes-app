@@ -11,7 +11,7 @@ export default function ProfileIcon({ darkMode = false, size = 40 }: ProfileIcon
             height={`${size}px`}
             viewBox="0 0 24 24"
             fill="none"
-            stroke={darkMode ? "#ffffff" : "#000000"}
+            stroke={darkMode ? "#ffffff" : "currentColor"}
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"

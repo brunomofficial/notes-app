@@ -1,6 +1,6 @@
-import { Router,  type Request, type Response, type NextFunction } from "express";
+import { Router, type Request, type Response } from "express";
 import { requireAuth } from "../middleware/auth.js";
-import { NoteModel, type Note } from "../models/note.js";
+import { NoteModel } from "../models/note.js";
 
 const MAX_NOTE_CHARS = 10_000;
 const MAX_NOTES_PER_USER = 200;
@@ -9,6 +9,10 @@ const getNoteTextLength = (title: unknown, content: unknown): number => {
     return (typeof title === "string" ? title : "").length
         + (typeof content === "string" ? content : "").length
 }
+
+const getNoteTitle = (title: unknown): string => {
+    return typeof title === "string" ? title : "";
+};
 
 const router: Router = Router()
 
@@ -67,7 +71,7 @@ router.post(
 
             const note = await NoteModel.create({
                 userId : user._id,
-                title: title || null,
+                title: getNoteTitle(title),
                 content
             });
             res.status(201).json({ note: note });
@@ -100,7 +104,7 @@ router.put(
             const user = req.user as any;
             const note = await NoteModel.findOneAndUpdate(
                 { _id: noteId, userId: user._id },
-                { title: title ?? "", content },
+                { title: getNoteTitle(title), content },
                 { returnDocument: 'after' }
             );
 

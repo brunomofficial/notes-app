@@ -1,4 +1,28 @@
 
+:root {
+  color-scheme: light;
+  --page-background: #f5bd37;
+  --text-color: #201b10;
+  --muted-text: #514a3b;
+  --surface: rgba(255, 255, 255, .3);
+  --surface-strong: rgba(255, 255, 255, .78);
+  --input-background: rgba(255, 255, 255, .76);
+  --border-color: rgba(63, 55, 2, .45);
+  --shadow: 0 0 15px rgba(0, 0, 0, .16);
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page-background: #10141d;
+  --text-color: #f3f4f6;
+  --muted-text: #c0c5d0;
+  --surface: rgba(30, 37, 51, .82);
+  --surface-strong: rgba(27, 34, 48, .96);
+  --input-background: rgba(15, 21, 31, .9);
+  --border-color: rgba(148, 163, 184, .35);
+  --shadow: 0 0 18px rgba(0, 0, 0, .4);
+}
+
 *{
   box-sizing: border-box;
 }
@@ -8,12 +32,21 @@ body{
   padding: 0;
   font-family: Arial, Helvetica, sans-serif;
   height: 100dvh;
+  color: var(--text-color);
+  background-color: var(--page-background);
   background-image: url('../public/background.svg');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
 }
+
+:root[data-theme="dark"] body {
+  background-image: radial-gradient(circle at 15% 10%, #27334b 0, transparent 42%), linear-gradient(135deg, #10141d, #171d2a);
+}
+
+button, input, textarea { font: inherit; }
+button { color: inherit; }
 
 .app{
   display: flex;

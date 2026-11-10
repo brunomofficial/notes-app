@@ -25,15 +25,15 @@
     transition: all 0.3s ease;
     border: none;
     box-shadow: 0 0 15px #00000026;
-    background-color: #ffffffb2;
+    background-color: var(--surface-strong);
     font-size: 1rem;
-    color: #00000083;
+    color: var(--text-color);
     font-weight: bold;
     letter-spacing: 1px;
 }
 
 .first-note-btn:hover{
-    background-color: #ffffffd4;
+    background-color: var(--surface);
     transform: scale(1.01);
 }
 

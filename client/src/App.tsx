@@ -9,6 +9,7 @@ import NoteEditor from "./pages/NoteEditor/NoteEditor";
 import NotFound from "./pages/NotFound/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import PublicRoute from "./components/PublicRoute/PublicRoute";
+import ThemeToggle from "./components/ThemeToggle/ThemeToggle";
 
 const Layout = () => {
   const { user, guestMode } = useApp();
@@ -40,6 +41,7 @@ export default function App() {
   return (
     <AppProvider>
       <main className="app">
+        <ThemeToggle />
         <Toaster position="bottom-center" />
         <Layout />
       </main>

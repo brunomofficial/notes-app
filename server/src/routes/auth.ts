@@ -9,6 +9,13 @@ import { sendVerificationEmail } from "../utils/mailer.js";
 
 const router: Router = Router();
 
+const isDuplicateKeyError = (error: unknown): boolean => {
+    return typeof error === "object"
+        && error !== null
+        && "code" in error
+        && error.code === 11000;
+};
+
 const loginLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
     max: 10,
@@ -164,6 +171,11 @@ router.post("/verify-code", verifyCodeLimiter, async(req: Request, res: Response
     }
     catch (err) {
         console.log(err);
+
+        if (isDuplicateKeyError(err)) {
+            return res.status(400).json({ error: "Email is already registered" });
+        }
+
         return res.status(500).json({ error: "Internal server error" });
     }
 });

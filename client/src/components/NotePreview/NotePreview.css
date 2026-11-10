@@ -1,4 +1,5 @@
 .note-preview{
+    position: relative;
     border-radius: 20px;
     margin-block: 7px;
     display: flex;
@@ -12,7 +13,8 @@
     padding: 10px 10px;
     cursor: pointer;
     transition: all 0.5s ease;
-    background-color: rgba(255, 255, 255, 0.3);
+    color: var(--text-color);
+    background-color: var(--surface);
     backdrop-filter: blur(50px);
 }
 
@@ -34,11 +36,21 @@
     transform: scale(0.99)
 }
 
+:root[data-theme="dark"] .note-preview {
+    border: 1px solid rgba(148, 163, 184, .22);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, .46), 0 0 0 1px rgba(255, 255, 255, .035);
+}
+
+:root[data-theme="dark"] .note-preview::before {
+    border-top-color: rgba(148, 163, 184, .42);
+    border-left-color: rgba(148, 163, 184, .42);
+}
+
 .note-preview-title{
     font-weight: bold;
     font-size: 1.1rem;
     text-decoration: underline;
-    color: #0000009d;
+    color: var(--muted-text);
 }
 
 .note-preview-content{

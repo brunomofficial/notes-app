@@ -15,8 +15,13 @@
     border-radius: 20px;
     position: relative;
     box-shadow: 0 0 15px #00000041;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: var(--surface);
     backdrop-filter: blur(50px);
+}
+
+:root[data-theme="dark"] .note-container {
+    border: 1px solid rgba(148, 163, 184, .24);
+    box-shadow: 0 14px 32px rgba(0, 0, 0, .52), 0 0 0 1px rgba(255, 255, 255, .035);
 }
 
 .note-editor-btns{
@@ -53,7 +58,7 @@
 
 .note-container label{
     font-weight: bold;
-    color: #000000dc;
+    color: var(--text-color);
     font-size: 1.2rem;
     margin-left: 10px;
     margin-top: 5px;
@@ -66,8 +71,8 @@
     border-radius: 10px;
     font-size: 1.3rem;
     font-weight: bold;
-    color: #000000bd;
-    background-color: #ffffffc1;
+    color: var(--text-color);
+    background-color: var(--input-background);
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.506) inset;
     border: none;
     padding: 0 10px;
@@ -84,10 +89,13 @@
     padding: 10px;
     font-size: 1.3rem;
     font-family: Arial, Helvetica, sans-serif;
-    background-color: #ffffffc1;
+    color: var(--text-color);
+    background-color: var(--input-background);
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.506) inset;
     border: none;
 }
+
+.note-input::placeholder, .title-input::placeholder { color: var(--muted-text); }
 
 @media (max-width: 767px) {
     .note-container{
