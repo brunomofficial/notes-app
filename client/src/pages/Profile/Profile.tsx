@@ -7,9 +7,10 @@ import ConfirmDialog from "../../components/ConfirmDialog/ConfirmDialog";
 import "./Profile.css";
 
 export default function Profile() {
-    const { user, setUser, notes, guestMode, setGuestMode } = useApp();
+    const { user, setUser, setNotes, notes, guestMode, setGuestMode } = useApp();
     const navigate = useNavigate(); 
     const [showLogoutDialog, setShowLogoutDialog] = useState(false);
+    const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
     if (!user && !guestMode) 
         return <div>Loading...</div>
@@ -22,15 +23,35 @@ export default function Profile() {
     const logout = async () => {
         try {
             const response = await api.post("/auth/logout");
-            const data = await response.json() as any;
+            const data = await response.json() as { message?: string };
 
-            toast.success(data.message);
+            toast.success(data.message || "Logged out successfully");
         }
         catch (err) {
             console.log(err)
         }
         finally {
             setUser(null);
+        }
+    }
+
+    const deleteAccount = async () => {
+        try {
+            const response = await api.post("/auth/delete-account");
+            const data = await response.json() as { message?: string; error?: string };
+
+            if (!response.ok) {
+                throw new Error(data.error || "Could not delete your account");
+            }
+
+            setUser(null);
+            setNotes([]);
+            toast.success(data.message || "Account deleted successfully");
+            navigate("/login");
+        }
+        catch (err) {
+            toast.error(err instanceof Error ? err.message : "Could not delete your account");
+            console.log(err);
         }
     }
 
@@ -64,6 +85,16 @@ export default function Profile() {
                 {guestMode ? "Exit guest mode" : "Log out"}
             </button>
 
+            {user && (
+                <button
+                    type="button"
+                    onClick={() => setShowDeleteDialog(true)}
+                    className="delete-account-btn"
+                >
+                    Delete Account
+                </button>
+            )}
+
             {showLogoutDialog && (
                 <ConfirmDialog
                     title={guestMode ? "Exit guest mode?" : "Log out"}
@@ -79,6 +110,18 @@ export default function Profile() {
                         }
                     } 
                     onCancel={()=>setShowLogoutDialog(false)}
+                />
+            )}
+
+            {showDeleteDialog && (
+                <ConfirmDialog
+                    title="Delete account?"
+                    message="This permanently deletes your account and all of your notes. This action cannot be undone."
+                    onConfirm={() => {
+                        setShowDeleteDialog(false);
+                        void deleteAccount();
+                    }}
+                    onCancel={() => setShowDeleteDialog(false)}
                 />
             )}
         </div>

@@ -37,7 +37,6 @@ export default function ConfirmDialog({ title, message, onConfirm, onCancel }: C
     return (
         <dialog ref={dialogRef} className="confirm-dialog" aria-labelledby={titleId} aria-describedby={messageId}>
             <div className="confirm-dialog-content">
-                <div className="confirm-dialog-icon" aria-hidden="true">?</div>
                 <div>
                     <h2 id={titleId}>{title}</h2>
                     <p id={messageId}>{message}</p>

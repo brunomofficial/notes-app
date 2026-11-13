@@ -4,7 +4,7 @@
     padding: 0;
     overflow: hidden;
     color: var(--text-color);
-    background: var(--surface-strong);
+    background: #ffffff22;
     border: 1px solid var(--border-color);
     border-radius: 18px;
     box-shadow: 0 24px 70px rgba(0, 0, 0, .3), 0 0 0 1px rgba(255, 255, 255, .06);
@@ -12,28 +12,15 @@
 }
 
 .confirm-dialog::backdrop {
-    background: rgba(8, 12, 20, .58);
+    background: #080c1430;
     backdrop-filter: blur(3px);
 }
 
 .confirm-dialog-content {
     display: flex;
-    align-items: flex-start;
+    justify-content: center;
     gap: 16px;
     padding: 30px 30px 24px;
-}
-
-.confirm-dialog-icon {
-    display: grid;
-    flex: 0 0 40px;
-    place-items: center;
-    width: 40px;
-    height: 40px;
-    color: #7b4d00;
-    background: #ffd166;
-    border-radius: 50%;
-    font-size: 1.3rem;
-    font-weight: 800;
 }
 
 .confirm-dialog h2 {
@@ -51,7 +38,7 @@
 
 .dialog-actions {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     gap: 10px;
     padding: 18px 30px 24px;
     background: color-mix(in srgb, var(--text-color) 4%, transparent);
@@ -65,16 +52,18 @@
     border: 1px solid transparent;
     border-radius: 9px;
     font-weight: 700;
-    transition: transform .18s ease, filter .18s ease, background .18s ease;
+    transition: 
+        transform .18s ease, filter .18s ease, 
+        background .18s ease;
 }
 
 .dialog-actions button:hover {
     filter: brightness(1.08);
-    transform: translateY(-1px);
+    transform: scale(1.03);
 }
 
 .dialog-actions button:active {
-    transform: translateY(0);
+    transform: scale(0.97);
 }
 
 .dialog-actions button:focus-visible {

@@ -35,3 +35,24 @@
 .logout-btn:active{
     transform: scale(0.9);
 }
+
+.delete-account-btn{
+    height: 40px;
+    width: 200px;
+    margin-top: 12px;
+    border: 1px solid #b3261e;
+    border-radius: 5px;
+    color: #b3261e;
+    background: transparent;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.delete-account-btn:hover{
+    color: #ffffff;
+    background-color: #b3261e;
+}
+
+.delete-account-btn:active{
+    transform: scale(0.9);
+}
