@@ -5,7 +5,9 @@ import { useApp } from "../../context/AppContext";
 import { api } from "../../utils/api";
 import SaveIcon from "../../assets/icons/SaveIcon";
 import DeleteIcon from "../../assets/icons/DeleteIcon";
+import ExportIcon from "../../assets/icons/ExportIcon";
 import ConfirmDialog from "../../components/ConfirmDialog/ConfirmDialog";
+import ExportDialog, { type ExportFormat } from "../../components/ExportDialog/ExportDialog";
 import "./NoteEditor.css";
 
 const MAX_NOTE_CHARS = 10_000;
@@ -20,6 +22,7 @@ export default function NoteEditor() {
     const [content, setContent] = useState("");
 
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+    const [showExportDialog, setShowExportDialog] = useState(false);
 
     useEffect(() => {
         if (!noteId || noteId === "new") return;
@@ -223,6 +226,35 @@ export default function NoteEditor() {
         }
     }
 
+    const exportNote = (format: ExportFormat) => {
+        const safeTitle = (title.trim() || "note")
+            .replace(/[^\w\s-]/g, "")
+            .trim()
+            .replace(/\s+/g, "-")
+            .slice(0, 50) || "note";
+        const noteData = {
+            noteId: noteId === "new" ? "unsaved-note" : noteId,
+            title,
+            content,
+        };
+        const fileContents = format === "json"
+            ? JSON.stringify(noteData, null, 2)
+            : `${title}\n\n${content}`;
+        const fileExtension = format === "json" ? "json" : "txt";
+        const mimeType = format === "json" ? "application/json" : "text/plain";
+        const noteFile = new Blob([fileContents], { type: mimeType });
+        const downloadUrl = URL.createObjectURL(noteFile);
+        const link = document.createElement("a");
+
+        link.href = downloadUrl;
+        link.download = `${safeTitle}.${fileExtension}`;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(downloadUrl);
+        toast.success("Note exported");
+    };
+
     const SaveButton = () => {
         return (
             <button
@@ -245,6 +277,17 @@ export default function NoteEditor() {
         );
     }
 
+    const ExportButton = () => {
+        return (
+            <button
+                onClick={() => setShowExportDialog(true)}
+                title="export note"
+            >
+                <ExportIcon />
+            </button>
+        );
+    }
+
     return (
         <div className="note-editor-page page">
             {showDeleteDialog &&
@@ -259,10 +302,20 @@ export default function NoteEditor() {
                     onCancel={() => setShowDeleteDialog(false)}
                 />}
 
+            {showExportDialog &&
+                <ExportDialog
+                    onConfirm={(format) => {
+                        setShowExportDialog(false);
+                        exportNote(format);
+                    }}
+                    onCancel={() => setShowExportDialog(false)}
+                />}
+
             <h2>Note Editor</h2>
             <div className="note-container">
                 <div className="note-editor-btns">
                     {noteId !== "new" && <DeleteButton />}
+                    <ExportButton />
                     <SaveButton />
                 </div>
 

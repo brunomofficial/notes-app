@@ -1,20 +1,23 @@
 .home-page{
-    overflow-y: scroll;
+    width: 100%;
+    max-width: 1200px;
+    margin-inline: auto;
+    padding: 0 20px 24px;
+    overflow-y: auto;
     scrollbar-width: auto;
 }
 
 .home-page h3{
-    margin-left: 15px;
-    margin-block: 0;
+    margin: 20px 0 14px;
+    font-size: 1.5rem;
 }
 
 .note-list{
-    display: flex;
-    flex-direction: column;
-    margin-top: 5px;
-    margin-left: 5px;
-    margin-bottom: 10px;
-    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 18px;
+    width: 100%;
+    margin: 0;
 }
 
 .first-note-btn{
@@ -22,6 +25,7 @@
     padding: 10px;
     border-radius: 7px;
     align-self: center;
+    margin: 24px auto;
     transition: all 0.3s ease;
     border: none;
     box-shadow: 0 0 15px #00000026;
@@ -42,6 +46,14 @@
 }
 
 @media (max-width: 767px) {
+    .home-page {
+        padding-inline: 12px;
+    }
+
+    .note-list {
+        grid-template-columns: 1fr;
+    }
+
     .note-list{
         margin-bottom: 40px;    
     }

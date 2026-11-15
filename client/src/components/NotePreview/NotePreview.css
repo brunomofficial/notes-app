@@ -1,16 +1,16 @@
 .note-preview{
     position: relative;
     border-radius: 20px;
-    margin-block: 7px;
+    margin: 0;
     display: flex;
     flex-direction: column;
     border-radius: 10px;
     box-shadow: 0 0 10px #0000003c;
     min-height: 90px;
-    width: max-content;
-    min-width: 200px;
-    max-width: 350px;
-    padding: 10px 10px;
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    padding: 14px;
     cursor: pointer;
     transition: all 0.5s ease;
     color: var(--text-color);
@@ -36,6 +36,48 @@
     transform: scale(0.99)
 }
 
+.note-preview-context-open {
+    z-index: 2;
+    outline: 2px solid color-mix(in srgb, var(--text-color) 38%, transparent);
+    outline-offset: 3px;
+    transform: scale(1.015);
+    filter: brightness(1.06);
+}
+
+.note-context-menu {
+    position: fixed;
+    z-index: 30;
+    display: flex;
+    flex-direction: column;
+    min-width: 180px;
+    padding: 6px;
+    color: var(--text-color);
+    background: var(--surface-strong);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(24px);
+}
+
+.note-context-menu button {
+    width: 100%;
+    padding: 9px 11px;
+    color: inherit;
+    text-align: left;
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.note-context-menu button:hover {
+    background: color-mix(in srgb, var(--text-color) 9%, transparent);
+}
+
+.note-context-delete {
+    color: #b3261e !important;
+}
+
 :root[data-theme="dark"] .note-preview {
     border: 1px solid rgba(148, 163, 184, .22);
     box-shadow: 0 10px 24px rgba(0, 0, 0, .46), 0 0 0 1px rgba(255, 255, 255, .035);
@@ -48,17 +90,21 @@
 
 .note-preview-title{
     font-weight: bold;
-    font-size: 1.1rem;
+    font-size: 1rem;
     text-decoration: underline;
     color: var(--muted-text);
 }
 
 .note-preview-content{
     margin-top: 5px;
-    font-size: 1.3rem;
-    max-height: 72px;
-    overflow-y: hidden;
-    flex-wrap: wrap;
+    font-size: 1rem;
+    line-height: 1.35;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: var(--preview-line-count, 3);
+    line-clamp: var(--preview-line-count, 3);
+    overflow: hidden;
+    overflow-wrap: anywhere;
 }
 
 @media (max-width: 767px) {

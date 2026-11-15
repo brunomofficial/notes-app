@@ -1,9 +1,9 @@
-import { useApp } from "../../context/AppContext";
+import { usePreferences } from "../../context/PreferencesContext";
 import ThemeIcon from "../../assets/icons/ThemeIcon";
 import "./ThemeToggle.css";
 
 export default function ThemeToggle() {
-    const { darkMode, toggleDarkMode } = useApp();
+    const { darkMode, toggleDarkMode } = usePreferences();
 
     return (
         <button

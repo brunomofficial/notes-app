@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import HomeIcon from "../../assets/icons/HomeIcon";
 import NewIcon from "../../assets/icons/NewIcon";
 import ProfileIcon from "../../assets/icons/ProfileIcon";
+import SettingsIcon from "../../assets/icons/SettingsIcon";
 import "./Navbar.css"
 
 export default function Navbar() {
@@ -29,6 +30,14 @@ export default function Navbar() {
                 title="profile page"
             >
                 <ProfileIcon size={30} />
+            </Link>
+
+            <Link
+                to="/settings"
+                className="navlink"
+                title="settings"
+            >
+                <SettingsIcon size={30} />
             </Link>
         </nav>
     );

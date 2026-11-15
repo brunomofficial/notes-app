@@ -6,7 +6,6 @@ import { api } from "../utils/api";
 
 const GUEST_MODE_KEY = "notes-app-guest-mode";
 const GUEST_NOTES_KEY = "notes-app-guest-notes";
-const THEME_KEY = "notes-app-theme";
 
 interface AppContextType {
     user: User | null;
@@ -16,24 +15,12 @@ interface AppContextType {
     loading: boolean;
     guestMode: boolean;
     setGuestMode: (enabled: boolean) => void;
-    darkMode: boolean;
-    toggleDarkMode: () => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export function AppProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<User | null>(null);
-    const [darkMode, setDarkMode] = useState(
-        () => localStorage.getItem(THEME_KEY) === "dark"
-    );
-
-    useEffect(() => {
-        document.documentElement.dataset.theme = darkMode ? "dark" : "light";
-        localStorage.setItem(THEME_KEY, darkMode ? "dark" : "light");
-    }, [darkMode]);
-
-    const toggleDarkMode = () => setDarkMode((enabled) => !enabled);
 
     const [guestMode, setGuestModeState] = useState(
         () => localStorage.getItem(GUEST_MODE_KEY) === "true"
@@ -137,9 +124,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
                 setNotes, 
                 loading,
                 guestMode,
-                setGuestMode,
-                darkMode,
-                toggleDarkMode
+                setGuestMode
             }}
         >
             {children}

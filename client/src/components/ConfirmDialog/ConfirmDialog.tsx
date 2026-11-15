@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import "./ConfirmDialog.css";
 
 interface ConfirmDialogProps {
@@ -34,8 +35,15 @@ export default function ConfirmDialog({ title, message, onConfirm, onCancel }: C
     const handleCancel = () => { onCancel(); closeDialog(); };
     const handleConfirm = () => { onConfirm(); closeDialog(); };
 
-    return (
-        <dialog ref={dialogRef} className="confirm-dialog" aria-labelledby={titleId} aria-describedby={messageId}>
+    return createPortal(
+        <dialog
+            ref={dialogRef}
+            className="confirm-dialog"
+            aria-labelledby={titleId}
+            aria-describedby={messageId}
+            onPointerDown={(event) => event.stopPropagation()}
+            onClick={(event) => event.stopPropagation()}
+        >
             <div className="confirm-dialog-content">
                 <div>
                     <h2 id={titleId}>{title}</h2>
@@ -46,6 +54,7 @@ export default function ConfirmDialog({ title, message, onConfirm, onCancel }: C
                 <button type="button" onClick={handleCancel} className="cancel-dialog-btn">Cancel</button>
                 <button type="button" onClick={handleConfirm} className="confirm-dialog-btn" autoFocus>Confirm</button>
             </div>
-        </dialog>
+        </dialog>,
+        document.body,
     );
 }

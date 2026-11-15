@@ -1,0 +1,87 @@
+.export-dialog {
+    width: min(calc(100vw - 32px), 420px);
+    margin: auto;
+    padding: 0;
+    overflow: hidden;
+    color: var(--text-color);
+    background: #ffffff22;
+    border: 1px solid var(--border-color);
+    border-radius: 18px;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, .3), 0 0 0 1px rgba(255, 255, 255, .06);
+    backdrop-filter: blur(24px);
+}
+
+.export-dialog::backdrop {
+    background: #080c1430;
+    backdrop-filter: blur(3px);
+}
+
+.export-dialog-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 28px 30px 24px;
+}
+
+.export-dialog h2 {
+    margin: 2px 0 2px;
+    color: var(--text-color);
+    font-size: 1.3rem;
+}
+
+.export-dialog p {
+    margin: 0 0 10px;
+    color: var(--muted-text);
+    line-height: 1.5;
+}
+
+.export-dialog label {
+    font-weight: 700;
+}
+
+.export-dialog select {
+    min-height: 40px;
+    padding: 0 9px;
+    color: var(--text-color);
+    background: var(--input-background);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+}
+
+.export-dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 18px 30px 24px;
+    background: color-mix(in srgb, var(--text-color) 4%, transparent);
+    border-top: 1px solid var(--border-color);
+}
+
+.export-dialog-actions button {
+    min-width: 102px;
+    min-height: 44px;
+    padding: 9px 18px;
+    border: 1px solid transparent;
+    border-radius: 9px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.export-dialog-actions button:hover {
+    filter: brightness(1.08);
+}
+
+.export-dialog-actions button:focus-visible {
+    outline: 3px solid rgba(255, 209, 102, .6);
+    outline-offset: 2px;
+}
+
+@media (max-width: 480px) {
+    .export-dialog-content {
+        padding: 22px 20px 17px;
+    }
+
+    .export-dialog-actions {
+        padding: 14px 20px 18px;
+    }
+}

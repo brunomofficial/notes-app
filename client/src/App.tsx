@@ -1,6 +1,7 @@
 import { Toaster } from "react-hot-toast";
 import { Routes, Route } from "react-router-dom";
 import { AppProvider, useApp } from "./context/AppContext";
+import { PreferencesProvider } from "./context/PreferencesContext";
 import Navbar from "./components/Navbar/Navbar";
 import Home from "./pages/Home/Home";
 import AuthPage from "./pages/AuthPage/AuthPage";
@@ -9,7 +10,7 @@ import NoteEditor from "./pages/NoteEditor/NoteEditor";
 import NotFound from "./pages/NotFound/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import PublicRoute from "./components/PublicRoute/PublicRoute";
-import ThemeToggle from "./components/ThemeToggle/ThemeToggle";
+import Settings from "./pages/Settings/Settings";
 
 const Layout = () => {
   const { user, guestMode } = useApp();
@@ -28,6 +29,8 @@ const Layout = () => {
 
           <Route path="/profile" element={<Profile />} />
 
+          <Route path="/settings" element={<Settings />} />
+
           <Route path="/notes/:noteId" element={<NoteEditor />} />
         </Route>
 
@@ -39,12 +42,13 @@ const Layout = () => {
 
 export default function App() {
   return (
-    <AppProvider>
-      <main className="app">
-        <ThemeToggle />
-        <Toaster position="bottom-center" />
-        <Layout />
-      </main>
-    </AppProvider>
+    <PreferencesProvider>
+      <AppProvider>
+        <main className="app">
+          <Toaster position="bottom-center" />
+          <Layout />
+        </main>
+      </AppProvider>
+    </PreferencesProvider>
   )
 }

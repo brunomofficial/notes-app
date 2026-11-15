@@ -33,10 +33,8 @@ export default function Home() {
 
     return (
         <div className="home-page page">
-            <div className="note-list">
-                <h3>Notes</h3>
-                <NoteList />
-            </div>
+            <h3>Notes</h3>
+            <NoteList />
         </div>
     );
 }
