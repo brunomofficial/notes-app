@@ -28,12 +28,19 @@
     position: absolute;
     top: 20px;
     right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 2px;
 }
 
 .note-editor-btns button{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     border-radius: 5px;
     border: none;
-    margin: 0 5px;
+    margin: 0;
+    padding: 4px;
     transition: all 0.15s ease;
     background-color: #00000000;
 }
@@ -103,7 +110,12 @@
         width: 90%;
         height: 80%;
         flex: none;
-        padding: 5px;
+        padding: 52px 5px 5px;
+    }
+
+    .note-editor-btns{
+        top: 10px;
+        right: 10px;
     }
 
     .title-input{
