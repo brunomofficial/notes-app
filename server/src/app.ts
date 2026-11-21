@@ -1,10 +1,10 @@
 import express, { type Express, type Request, type Response, type NextFunction, type RequestHandler, urlencoded} from "express";
-import { createRequire } from "node:module";
 import mongoose from "mongoose"
 import session from "express-session";
 import { MongoStore } from "connect-mongo";
 import passport from "./config/passport.js";
 import cors from "cors";
+import helmet from "helmet";
 import { rateLimit } from "express-rate-limit";
 import dotenv from "dotenv";
 import notesRouter from "./routes/notes.js";
@@ -13,7 +13,7 @@ import authRouter from "./routes/auth.js";
 dotenv.config();
 
 const app: Express = express();
-const helmet = createRequire(import.meta.url)("helmet") as () => RequestHandler;
+const createHelmetMiddleware = helmet as unknown as () => RequestHandler;
 
 const NODE_ENV = process.env.NODE_ENV || "development";
 const MONGO_URI = process.env.MONGO_URI;
@@ -35,7 +35,7 @@ if (!process.env.SESSION_SECRET) {
 
 app.set("trust proxy", NODE_ENV === "production" ? 2 : false);
 
-app.use(helmet());
+app.use(createHelmetMiddleware());
 app.use(express.json());
 app.use(urlencoded({ extended: true }));
 
