@@ -15,7 +15,7 @@ import { requireAuth } from "../middleware/auth.js";
 import { NoteModel } from "../models/note.js";
 
 const router: Router = Router();
-const MIN_PASSWORD_LENGTH = 9;
+const MIN_PASSWORD_LENGTH = 8;
 
 const isDuplicateKeyError = (error: unknown): boolean => {
   return (

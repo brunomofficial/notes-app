@@ -6,6 +6,7 @@ import { api } from "../../utils/api";
 import SaveIcon from "../../assets/icons/SaveIcon";
 import DeleteIcon from "../../assets/icons/DeleteIcon";
 import ExportIcon from "../../assets/icons/ExportIcon";
+import CopyIcon from "../../assets/icons/CopyIcon";
 import ConfirmDialog from "../../components/ConfirmDialog/ConfirmDialog";
 import ExportDialog, { type ExportFormat } from "../../components/ExportDialog/ExportDialog";
 import "./NoteEditor.css";
@@ -255,6 +256,22 @@ export default function NoteEditor() {
         toast.success("Note exported");
     };
 
+    const copyNote = async () => {
+        if (!navigator.clipboard?.writeText) {
+            toast.error("Failed to copy note");
+            return;
+        }
+
+        const text = title ? `${title}\n${content}` : content;
+
+        try {
+            await navigator.clipboard.writeText(text);
+            toast.success("Note copied");
+        } catch {
+            toast.error("Error copying note");
+        }
+    };
+
     const SaveButton = () => {
         return (
             <button
@@ -288,6 +305,18 @@ export default function NoteEditor() {
         );
     }
 
+    const CopyButton = () => {
+        return (
+            <button
+                onClick={copyNote}
+                title="copy note"
+                aria-label="Copy note"
+            >
+                <CopyIcon />
+            </button>
+        );
+    }
+
     return (
         <div className="note-editor-page page">
             {showDeleteDialog &&
@@ -316,6 +345,7 @@ export default function NoteEditor() {
                 <div className="note-editor-btns">
                     {noteId !== "new" && <DeleteButton />}
                     <ExportButton />
+                    <CopyButton />
                     <SaveButton />
                 </div>
 

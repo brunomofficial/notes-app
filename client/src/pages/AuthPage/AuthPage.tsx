@@ -6,7 +6,7 @@ import { api } from "../../utils/api";
 import EyeIcon from "../../assets/icons/EyeIcon";
 import "./AuthPage.css";
 
-const MIN_PASSWORD_LENGTH = 9;
+const MIN_PASSWORD_LENGTH = 8;
 
 export default function AuthPage() {
 	const navigate = useNavigate();

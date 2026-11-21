@@ -74,6 +74,59 @@
     background: color-mix(in srgb, var(--text-color) 9%, transparent);
 }
 
+.note-context-copy {
+    position: relative;
+    color: var(--text-color);
+    transition: color 180ms ease, background-color 180ms ease, transform 150ms ease;
+}
+
+.note-context-copy.copied {
+    color: #188038;
+    background: color-mix(in srgb, #188038 10%, transparent);
+}
+
+.note-copy-label {
+    position: relative;
+    display: block;
+    height: 1.25em;
+    overflow: hidden;
+}
+
+.note-copy-label-default,
+.note-copy-label-success {
+    position: absolute;
+    inset: 0;
+    transition: opacity 180ms ease, transform 220ms cubic-bezier(.2, .8, .2, 1);
+}
+
+.note-copy-label-default {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.note-copy-label-default.is-hidden {
+    opacity: 0;
+    transform: translateY(-90%);
+}
+
+.note-copy-label-success {
+    opacity: 0;
+    transform: translateY(90%);
+}
+
+.note-copy-label-success.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .note-context-copy,
+    .note-copy-label-default,
+    .note-copy-label-success {
+        transition: none;
+    }
+}
+
 .note-context-delete {
     color: #b3261e !important;
 }
@@ -90,15 +143,16 @@
 
 .note-preview-title{
     font-weight: bold;
-    font-size: 1rem;
+    font-size: var(--font-size-title);
     text-decoration: underline;
     color: var(--muted-text);
+    margin-bottom: 8px;
 }
 
 .note-preview-content{
-    margin-top: 5px;
-    font-size: 1rem;
-    line-height: 1.35;
+    margin-top: 4px;
+    font-size: var(--font-size-body);
+    line-height: 1.5;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: var(--preview-line-count, 3);
@@ -113,10 +167,10 @@
     }
 
     .note-preview-title{
-        font-size: 1.1rem;
+        font-size: var(--font-size-subtitle);
     }
 
     .note-preview-content{
-        font-size: 1.2rem;
+        font-size: var(--font-size-small);
     }
 }

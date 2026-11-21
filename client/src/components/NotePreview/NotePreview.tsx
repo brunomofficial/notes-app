@@ -14,7 +14,15 @@ export default function NotePreview({ note }: { note: Note }) {
     const noteId = note.noteId;
     const [menuPosition, setMenuPosition] = useState<{ x: number; y: number } | null>(null);
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+    const [copied, setCopied] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (!copied) return;
+
+        const timeoutId = window.setTimeout(() => setCopied(false), 2000);
+        return () => window.clearTimeout(timeoutId);
+    }, [copied]);
 
     useEffect(() => {
         if (!menuPosition) return;
@@ -65,6 +73,22 @@ export default function NotePreview({ note }: { note: Note }) {
         toast.success("Note exported");
     };
 
+    const copyNote = async () => {
+        if (!navigator.clipboard?.writeText) {
+            toast.error("Failed to copy note");
+            return;
+        }
+
+        const text = note.title ? `${note.title}\n${note.content}` : note.content;
+
+        try {
+            await navigator.clipboard.writeText(text);
+            setCopied(true);
+        } catch {
+            toast.error("Error copying note");
+        }
+    };
+
     const deleteNote = async () => {
         if (guestMode) {
             setNotes(notes.filter((currentNote) => currentNote.noteId !== noteId));
@@ -111,6 +135,24 @@ export default function NotePreview({ note }: { note: Note }) {
                     <button type="button" role="menuitem" onClick={exportNote}>
                         Export note
                     </button>
+
+                    <button
+                        type="button"
+                        role="menuitem"
+                        className={`note-context-copy${copied ? " copied" : ""}`}
+                        aria-label={copied ? "Copied" : "Copy note"}
+                        onClick={copyNote}
+                    >
+                        <span className="note-copy-label" aria-hidden="true">
+                            <span className={`note-copy-label-default${copied ? " is-hidden" : ""}`}>
+                                Copy note
+                            </span>
+                            <span className={`note-copy-label-success${copied ? " is-visible" : ""}`}>
+                                Copied
+                            </span>
+                        </span>
+                    </button>
+
                     <button
                         type="button"
                         role="menuitem"

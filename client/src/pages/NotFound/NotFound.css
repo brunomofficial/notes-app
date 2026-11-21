@@ -9,7 +9,7 @@
 
 .not-found-page p{
     align-self: center;
-    font-size: 1.4rem;
+    font-size: var(--font-size-page-title);
     font-weight: bold;
     color: var(--text-color);
 }
@@ -19,7 +19,7 @@
     height: 50px;
     background-color: #058005;
     color: #f0eeeb;
-    font-size: 1.1rem;
+    font-size: var(--font-size-large);
     align-self: center;
     border-radius: 5px;
     transition: all 0.3s ease;
