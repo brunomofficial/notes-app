@@ -4,7 +4,7 @@ import session from "express-session";
 import { MongoStore } from "connect-mongo";
 import passport from "./config/passport.js";
 import cors from "cors";
-import helmet from "helmet";
+import * as helmetModule from "helmet";
 import { rateLimit } from "express-rate-limit";
 import dotenv from "dotenv";
 import notesRouter from "./routes/notes.js";
@@ -34,7 +34,7 @@ if (!process.env.SESSION_SECRET) {
 
 app.set("trust proxy", NODE_ENV === "production" ? 2 : false);
 
-app.use(helmet());
+app.use(helmetModule.default());
 app.use(express.json());
 app.use(urlencoded({ extended: true }));
 
